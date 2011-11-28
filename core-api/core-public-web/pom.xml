@@ -41,17 +41,7 @@
         </dependency>        
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>atlas-rax-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>atlas-rax-data-model</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>atlas-rax-persistence</artifactId>
+            <artifactId>rax</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
