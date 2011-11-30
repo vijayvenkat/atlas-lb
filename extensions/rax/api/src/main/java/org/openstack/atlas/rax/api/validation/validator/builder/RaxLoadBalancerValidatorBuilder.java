@@ -34,7 +34,8 @@ public class RaxLoadBalancerValidatorBuilder extends LoadBalancerValidatorBuilde
         super(algorithmType, protocolType, nodeValidatorBuilder, virtualIpValidatorBuilder, healthMonitorValidatorBuilder, connectionThrottleValidatorBuilder, sessionPersistenceValidatorBuilder);
 
         // POST EXPECTATIONS
-        result(validationTarget().getAnies()).if_().exist().then().must().delegateTo(new RaxLoadBalancerValidator().getValidator(), POST).forContext(POST);
+        /*
+        result(validationTarget().getAnies()).if_().exist().then().must().delegateTo(new RaxLoadBalancerValidator().getValidator(), POST).forContext(POST); 
         result(validationTarget().getOtherAttributes()).if_().not().adhereTo(new MustBeEmptyOrNull()).then().must().adhereTo(new Verifier<Map<QName, String>>() {
             @Override
             public VerifierResult verify(Map<QName, String> otherAttributes) {
@@ -42,5 +43,6 @@ public class RaxLoadBalancerValidatorBuilder extends LoadBalancerValidatorBuilde
                 return new VerifierResult(crazyNameValue.equals("foo"));
             }
         }).forContext(POST).withMessage("'crazyName' attribute must equal foo!");
+        */
     }
 }
