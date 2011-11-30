@@ -5,7 +5,7 @@ import org.openstack.atlas.rax.domain.entity.AccessListType;
 import org.openstack.atlas.rax.domain.entity.RaxLoadBalancer;
 import org.openstack.atlas.rax.domain.helper.ExtensionConverter;
 
-import org.openstack.atlas.api.v1.extensions.rax.IpVersion;
+import org.openstack.atlas.core.api.v1.IpVersion;
 import org.openstack.atlas.api.v1.extensions.rax.NetworkItemType;
 
 import org.openstack.atlas.service.domain.stub.StubFactory;
@@ -51,7 +51,7 @@ public class RaxStubFactory extends StubFactory {
 
         org.openstack.atlas.core.api.v1.VirtualIp virtualIp1 = new org.openstack.atlas.core.api.v1.VirtualIp();
         virtualIp1.setType(org.openstack.atlas.core.api.v1.VipType.fromValue(VIP1_TYPE));
-        virtualIp1.setIpVersion(org.openstack.atlas.core.api.v1.IpVersion.fromValue(VIP1_VERSION));
+        virtualIp1.setIpVersion(IpVersion.fromValue(VIP1_VERSION));
         loadBalancer.getVirtualIps().add(virtualIp1);
 
         org.openstack.atlas.core.api.v1.VirtualIp virtualIp2 = new org.openstack.atlas.core.api.v1.VirtualIp();
@@ -103,7 +103,7 @@ public class RaxStubFactory extends StubFactory {
         virtualIp1.setId(VIP1_ID);
         virtualIp1.setAddress(VIP1_ADDRESS);
         virtualIp1.setType(org.openstack.atlas.core.api.v1.VipType.fromValue(VIP1_TYPE));
-        virtualIp1.setIpVersion(org.openstack.atlas.core.api.v1.IpVersion.fromValue(VIP1_VERSION));
+        virtualIp1.setIpVersion(IpVersion.fromValue(VIP1_VERSION));
         loadBalancer.getVirtualIps().add(virtualIp1);
 
         loadBalancer.setConnectionThrottle(createHydratedDataModelConnectionThrottle());
