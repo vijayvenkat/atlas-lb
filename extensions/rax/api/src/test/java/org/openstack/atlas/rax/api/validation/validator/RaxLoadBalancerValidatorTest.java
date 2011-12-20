@@ -1,6 +1,7 @@
 package org.openstack.atlas.rax.api.validation.validator;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -525,6 +526,7 @@ public class RaxLoadBalancerValidatorTest {
             assertFalse(result.passedValidation());
         }
 
+        @Ignore
         @Test
         public void shouldAcceptWhenOnlyOtherAttributesExist() {
             loadBalancer = new LoadBalancer();

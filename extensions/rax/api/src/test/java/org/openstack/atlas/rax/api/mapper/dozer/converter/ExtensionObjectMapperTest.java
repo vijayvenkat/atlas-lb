@@ -1,6 +1,7 @@
 package org.openstack.atlas.rax.api.mapper.dozer.converter;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openstack.atlas.api.v1.extensions.rax.AccessList;
 import org.openstack.atlas.api.v1.extensions.rax.NetworkItem;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 import java.util.List;
 
+@Ignore
 public class ExtensionObjectMapperTest {
     private LoadBalancer unMarshalledLb;
 
