@@ -106,7 +106,7 @@
                                     <goal>jdeb</goal>
                                 </goals>
                                 <configuration>
-                                    <deb>${project.build.directory}/${artifactId}_${version}_all.deb</deb>
+                                    <deb>${project.build.directory}/openstack-atlas-jobs_${version}_all.deb</deb>
                                     <dataSet>
                                         <data>
                                             <src>${project.build.directory}/${project.build.finalName}.war</src>
