@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>core-api</artifactId>
         <groupId>org.openstack.atlas</groupId>
@@ -17,7 +18,7 @@
             <artifactId>core-common-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-       <!-- <dependency>
+        <!-- <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId></artifactId>
             <version>${project.version}</version>
@@ -36,7 +37,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>core-netscaler-adapter</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>rax</artifactId>
@@ -46,7 +47,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>ctxs</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
@@ -94,8 +95,16 @@
                                     <goal>jdeb</goal>
                                 </goals>
                                 <configuration>
-                                    <deb>${project.build.directory}/openstack-atlas-api_${version}_all.deb</deb>
+                                    <deb>${project.build.directory}/openstack-atlas_${version}_all.deb</deb>
                                     <dataSet>
+                                        <data>
+                                            <src>${project.basedir}/src/deb/contrib</src>
+                                            <type>directory</type>
+                                            <mapper>
+                                                <type>perm</type>
+                                                <prefix>/opt/openstack/atlas</prefix>
+                                            </mapper>
+                                        </data>
                                         <data>
                                             <src>${project.build.directory}/${project.build.finalName}.war</src>
                                             <type>file</type>

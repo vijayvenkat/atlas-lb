@@ -1,4 +1,4 @@
-Package: openstack-atlas-api
+Package: openstack-atlas
 Version: [[version]]
 Section: libs
 Priority: optional
