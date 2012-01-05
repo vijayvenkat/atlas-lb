@@ -4,5 +4,6 @@ Section: libs
 Priority: optional
 Architecture: all
 Maintainer: Jorge Miramontes <jorge.miramontes@rackspace.com>
-Description: Openstack Atlas Cloud Load Balancing solution that currently runs under the Glassfish web server
+Description: Openstack Atlas Cloud Load Balancing solution
+ that currently runs under the Glassfish web server
 Distribution: development

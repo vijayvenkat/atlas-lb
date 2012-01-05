@@ -5,5 +5,6 @@ Priority: optional
 Architecture: all
 Depends: openstack-atlas
 Maintainer: Jorge Miramontes <jorge.miramontes@rackspace.com>
-Description: Openstack Atlas Cloud Load Balancing jobs package that currently runs under Glassfish web server
+Description: Openstack Atlas Cloud Load Balancing jobs
+ package that currently runs under Glassfish web server
 Distribution: development
