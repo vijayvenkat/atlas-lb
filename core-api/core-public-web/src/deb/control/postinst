@@ -1,17 +1,17 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-#Add a new user called glassfish
+echo "Adding user 'glassfish'..."
 sudo adduser --home /home/glassfish --system --shell /bin/bash glassfish
 
-#add a new group for glassfish administration
+echo "Adding a new group for Glassfish administration..."
 sudo groupadd glassfishadm
 
-#add your users that shall be Glassfish adminstrators
+echo "Adding 'glassfish' user to be a Glassfish adminstrator..."
 sudo usermod -a -G glassfishadm glassfish
 
 
-#remove OpenJDK if installed
+echo "Removing OpenJDK if installed..."
 sudo apt-get remove openjdk-6-jre openjdk-6-jdk
 
 #maybe you have to execute this here first, else
