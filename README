@@ -7,8 +7,8 @@ Requirements
   MySql >= 5.x
 
 
-Getting Started
----------------
+Installing from source
+----------------------
   1) Create a MySql database called 'loadbalancing'
 
   2) Follow the steps in article below to create a mysql data-source in the Glassfish application server. This is the
@@ -40,3 +40,19 @@ Getting Started
     http://wiki.openstack.org/Atlas-LB (API Documentation)
     https://launchpad.net/atlas-lb (Process Management)
     http://openstack.org/ (Openstack)
+
+
+Installing using apt-get
+------------------------
+  1) Add the proper debian package repositories to your sources.list file:
+
+    'sudo add-apt-repository "deb http://50.57.100.173:81/packages/openstack-repo lucid main"'
+    'sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"'
+
+  2) Update to know about the repositories:
+
+    'sudo apt-get update'
+
+  3) Install Atlas
+
+    'sudo apt-get install openstack-atlas'

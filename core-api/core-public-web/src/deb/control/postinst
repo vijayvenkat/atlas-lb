@@ -3,11 +3,11 @@
 set -e
 
 function install_glassfish_user {
-    echo "Adding user 'glassfish'..."
-    sudo adduser --home /home/glassfish --system --shell /bin/bash glassfish
-
     echo "Adding a new group for Glassfish administration..."
     sudo groupadd glassfishadm
+
+    echo "Adding user 'glassfish'..."
+    sudo adduser --home /home/glassfish --ingroup glassfishadm --system --shell /bin/bash glassfish
 
     echo "Adding 'glassfish' user to be a Glassfish adminstrator..."
     sudo usermod -a -G glassfishadm glassfish
@@ -110,12 +110,31 @@ function install_glassfish {
     return 0
 }
 
+function configure_mysql {
+    echo "Adding mysql database 'openstack_atlas' and mysql user 'atlas' with password 'password' (please change later)..."
+    MYSQL=`which mysql`
+    DATABASE="openstack_atlas"
+    USER="atlas"
+    PASSWORD="password"
+     
+    Q1="CREATE DATABASE IF NOT EXISTS $DATABASE;"
+    Q2="GRANT ALL ON *.* TO '$USER'@'localhost' IDENTIFIED BY '$PASSWORD';"
+    Q3="FLUSH PRIVILEGES;"
+    SQL="${Q1}${Q2}${Q3}"
+
+    echo "Please enter the root password for MySQL..."
+    $MYSQL -uroot -p -e "$SQL"
+
+    return 0
+}
+
 case "$1" in
     configure|triggered)
         echo "postinst called with arguments: '$1', '$2'"
         install_glassfish_user
         configure_java
         install_glassfish
+        configure_mysql
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
