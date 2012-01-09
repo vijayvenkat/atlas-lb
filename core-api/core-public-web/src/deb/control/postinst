@@ -16,12 +16,12 @@ function install_glassfish_user {
 }
 
 function install_java {
-    echo "Removing OpenJDK if installed..."
-    sudo apt-get remove openjdk-6-jre openjdk-6-jdk
+    #echo "Removing OpenJDK if installed..."
+    #sudo apt-get remove openjdk-6-jre openjdk-6-jdk
 
     #maybe you have to execute this here first, else
     #add-apt-repository might fail
-    sudo apt-get install python-software-properties
+    #sudo apt-get install python-software-properties
 
     #add new repository that contains sun java (see https://wiki.ubuntu.com/LucidLynx/ReleaseNotes)
     sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
@@ -30,7 +30,7 @@ function install_java {
     sudo apt-get update
 
     #now install Sun JDK
-    sudo apt-get install sun-java6-jdk  sun-java6-jre
+    #sudo apt-get install sun-java6-jdk  sun-java6-jre
 
     #get rid of several automatically installed packages that are not needed anymore
     sudo apt-get autoremove
@@ -64,7 +64,7 @@ function install_java {
 
 function install_glassfish {
     #if you dont't have "unzip" installed run this here first
-    sudo apt-get install unzip
+    #sudo apt-get install unzip
 
     #now switch user to the glassfish user we created (see step 1)
     #sudo su glassfish
