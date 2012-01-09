@@ -32,8 +32,8 @@ function configure_java {
     #now install Sun JDK
     #sudo apt-get install sun-java6-jdk  sun-java6-jre
 
-    echo "Getting rid of several automatically installed packages that are not needed anymore..."
-    sudo apt-get autoremove
+    #echo "Getting rid of several automatically installed packages that are not needed anymore..."
+    #sudo apt-get autoremove
 
     #optional:
     #make sure environment points to a valid install if you are replacing...
@@ -47,6 +47,7 @@ function configure_java {
     #vim /etc/bash.bashrc
     #append the following line:
     #export JAVA_HOME=/usr/lib/jvm/java-6-sun
+    echo "Setting JAVA_HOME globally for all users (only for bash)..."
     echo "JAVA_HOME=/usr/lib/jvm/java-6-sun" >> /etc/bash.bashrc
 
     #setting JAVA_HOME for everyone (best place for setting env vars globally)
@@ -56,6 +57,8 @@ function configure_java {
     #JAVA_HOME=/usr/lib/jvm/java-6-sun
     #we will set this here because it might prevent problems later
     #AS_JAVA=/usr/lib/jvm/java-6-sun
+
+    echo "Setting JAVA_HOME and AS_JAVA for everyone (best place for setting env vars globally)..."
     echo "JAVA_HOME=/usr/lib/jvm/java-6-sun" >> /etc/environment
     echo "AS_JAVA=/usr/lib/jvm/java-6-sun" >> /etc/environment
 
@@ -78,7 +81,7 @@ function install_glassfish {
     #go to the directory we created
     cd /home/glassfish/downloads/
 
-    #download Glassfish and unzip
+    echo "Downloading Glassfish and installing..."
     sudo -u glassfish wget http://download.java.net/glassfish/3.1/release/glassfish-3.1.zip
     sudo -u glassfish unzip glassfish-3.1.zip
 

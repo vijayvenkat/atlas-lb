@@ -1,11 +1,11 @@
 #! /bin/bash
 
 function add_sun_java_repo {
-    #add new repository that contains sun java (see https://wiki.ubuntu.com/LucidLynx/ReleaseNotes)
+    echo Adding new repository that contains sun java (see https://wiki.ubuntu.com/LucidLynx/ReleaseNotes)..."
     sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
 
     #update to know about new repository
-    sudo apt-get update
+    #sudo apt-get update
 
     return 0
 }
