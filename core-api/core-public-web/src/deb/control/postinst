@@ -15,7 +15,7 @@ function install_glassfish_user {
     return 0
 }
 
-function install_java {
+function configure_java {
     #echo "Removing OpenJDK if installed..."
     #sudo apt-get remove openjdk-6-jre openjdk-6-jdk
 
@@ -24,15 +24,15 @@ function install_java {
     #sudo apt-get install python-software-properties
 
     #add new repository that contains sun java (see https://wiki.ubuntu.com/LucidLynx/ReleaseNotes)
-    sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+    #sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
 
     #update to know about new repository
-    sudo apt-get update
+    #sudo apt-get update
 
     #now install Sun JDK
     #sudo apt-get install sun-java6-jdk  sun-java6-jre
 
-    #get rid of several automatically installed packages that are not needed anymore
+    echo "Getting rid of several automatically installed packages that are not needed anymore..."
     sudo apt-get autoremove
 
     #optional:
@@ -111,7 +111,7 @@ case "$1" in
     configure|triggered)
         echo "postinst called with arguments: '$1', '$2'"
         install_glassfish_user
-        install_java
+        configure_java
         install_glassfish
     ;;
 

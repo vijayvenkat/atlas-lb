@@ -1,0 +1,35 @@
+#! /bin/bash
+
+function add_sun_java_repo {
+    #add new repository that contains sun java (see https://wiki.ubuntu.com/LucidLynx/ReleaseNotes)
+    sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+
+    #update to know about new repository
+    sudo apt-get update
+
+    return 0
+}
+
+case "$1" in
+    install)
+        echo "preinst called with arguments: '$1', '$2'"
+        add_sun_java_repo
+    ;;
+
+    upgrade)
+        echo "preinst called with arguments: '$1', '$2'"
+    ;;
+
+    abort-upgrade)
+        echo "preinst called with argument: '$1'"
+    ;;
+
+    *)
+    echo "preinst called with unknown argument '$1'" >&2
+    exit 0
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
