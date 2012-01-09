@@ -9,3 +9,5 @@
 
 # Remove old files
 #sudo rm -rf /home/glassfish
+
+exit 0
