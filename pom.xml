@@ -6,8 +6,33 @@
     <name>Openstack :: Atlas :: Parent</name>
     <groupId>org.openstack.atlas</groupId>
     <artifactId>atlas-parent</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>0.0.18-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <scm>
+        <url>scm:git:git@github.com:rackspace/atlas-lb.git</url>
+        <developerConnection>scm:git:git@github.com:rackspace/atlas-lb.git</developerConnection>
+        <connection>scm:git:git@github.com:rackspace/atlas-lb.git</connection>
+    </scm>
+
+    <organization>
+        <name>Openstack</name>
+        <url>http://openstack.org/</url>
+    </organization>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>openstack-snapshots</id>
+            <name>Openstack Maven Repository - Snapshots</name>
+            <url>http://50.57.100.173/m2/content/repositories/snapshots/</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>openstack-releases</id>
+            <name>Openstack Maven Repository - Releases</name>
+            <url>http://50.57.100.173/m2/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 
     <modules>
         <module>core-common</module>
