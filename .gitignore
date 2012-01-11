@@ -1,0 +1,25 @@
+## java specific
+!.gitignore
+*.iml
+*.iws
+*.ipr
+*.ids
+.maven
+.settings
+.project
+.classpath
+target/
+*/target
+classes/
+*/target/*
+*/*/target
+*/*/*/target/*
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+*.log
+*.log.*
