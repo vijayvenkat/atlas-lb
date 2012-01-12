@@ -79,7 +79,7 @@ function install_glassfish {
     sudo -u atlas mkdir downloads
 
     #go to the directory we created
-    cd /home/glassfish/downloads/
+    cd /home/atlas/downloads/
 
     echo "Downloading Glassfish and installing..."
     sudo -u atlas wget http://download.java.net/glassfish/3.1/release/glassfish-3.1.zip
