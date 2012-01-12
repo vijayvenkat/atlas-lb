@@ -1,14 +1,14 @@
 #!/bin/bash
 set -e
 
-echo "Removing 'glassfish' user..."
-sudo deluser glassfish
+echo "Removing 'atlas' user..."
+sudo deluser atlas
 
 echo "Removing 'glassfishadm' group..."
 sudo delgroup glassfishadm
 
 echo "Removing old files..."
-sudo rm -rf /home/glassfish
+sudo rm -rf /home/atlas
 
 #DEBHELPER#
 

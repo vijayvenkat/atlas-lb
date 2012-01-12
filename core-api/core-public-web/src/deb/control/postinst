@@ -6,10 +6,10 @@ function install_glassfish_user {
     echo "Adding a new group for Glassfish administration..."
     sudo groupadd glassfishadm
 
-    echo "Adding user 'glassfish'..."
+    echo "Adding user 'atlas'..."
     sudo adduser --home /home/atlas --ingroup glassfishadm --system --shell /bin/bash atlas
 
-    echo "Adding 'glassfish' user to be a Glassfish adminstrator..."
+    echo "Adding 'atlas' user to be a Glassfish adminstrator..."
     sudo usermod -a -G glassfishadm atlas
 
     return 0
