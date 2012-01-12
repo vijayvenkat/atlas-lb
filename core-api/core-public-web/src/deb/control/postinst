@@ -7,10 +7,10 @@ function install_glassfish_user {
     sudo groupadd glassfishadm
 
     echo "Adding user 'glassfish'..."
-    sudo adduser --home /home/glassfish --ingroup glassfishadm --system --shell /bin/bash glassfish
+    sudo adduser --home /home/atlas --ingroup glassfishadm --system --shell /bin/bash atlas
 
     echo "Adding 'glassfish' user to be a Glassfish adminstrator..."
-    sudo usermod -a -G glassfishadm glassfish
+    sudo usermod -a -G glassfishadm atlas
 
     return 0
 }
@@ -69,43 +69,43 @@ function install_glassfish {
     #if you dont't have "unzip" installed run this here first
     #sudo apt-get install unzip
 
-    #now switch user to the glassfish user we created (see step 1)
-    #sudo su glassfish
+    #now switch user to the atlas user we created (see step 1)
+    #sudo su atlas
 
-    #change to home dir of glassfish
-    cd /home/glassfish/
+    #change to home dir of atlas
+    cd /home/atlas/
 
     #create new directory if not already available
-    sudo -u glassfish mkdir downloads
+    sudo -u atlas mkdir downloads
 
     #go to the directory we created
     cd /home/glassfish/downloads/
 
     echo "Downloading Glassfish and installing..."
-    sudo -u glassfish wget http://download.java.net/glassfish/3.1/release/glassfish-3.1.zip
-    sudo -u glassfish unzip glassfish-3.1.zip
+    sudo -u atlas wget http://download.java.net/glassfish/3.1/release/glassfish-3.1.zip
+    sudo -u atlas unzip glassfish-3.1.zip
 
     #move the relevant content to home directory
-    sudo -u glassfish mv /home/glassfish/downloads/glassfish3/* /home/glassfish/
+    sudo -u atlas mv /home/atlas/downloads/glassfish3/* /home/atlas/
     #if something has not been moved, then move it manually, i.e.:
-    sudo -u glassfish mv /home/glassfish/downloads/glassfish3/.org.opensolaris,pkg /home/glassfish/.org.opensolaris,pkg
+    sudo -u atlas mv /home/atlas/downloads/glassfish3/.org.opensolaris,pkg /home/atlas/.org.opensolaris,pkg
 
-    #exit from glassfish user
+    #exit from atlas user
     #exit
 
-    #change group of glassfish home directory to glassfishadm
-    sudo chgrp -R glassfishadm /home/glassfish
+    #change group of atlas home directory to glassfishadm
+    sudo chgrp -R glassfishadm /home/atlas
 
-    #just to make sure: change owner of glassfish home directory to glassfish
-    sudo chown -R glassfish /home/glassfish
+    #just to make sure: change owner of atlas home directory to atlas
+    sudo chown -R atlas /home/atlas
 
     #make sure the relevant files are executable/modifyable/readable for owner and group
-    sudo chmod -R ug+rwx /home/glassfish/bin/
-    sudo chmod -R ug+rwx /home/glassfish/glassfish/bin/
+    sudo chmod -R ug+rwx /home/atlas/bin/
+    sudo chmod -R ug+rwx /home/atlas/glassfish/bin/
 
     #others are not allowed to execute/modify/read them
-    sudo chmod -R o-rwx /home/glassfish/bin/
-    sudo chmod -R o-rwx /home/glassfish/glassfish/bin/
+    sudo chmod -R o-rwx /home/atlas/bin/
+    sudo chmod -R o-rwx /home/atlas/glassfish/bin/
 
     return 0
 }
@@ -128,19 +128,45 @@ function configure_mysql {
     return 0
 }
 
+function install_and_start_activemq {
+    #go to the directory we created
+    cd /home/atlas/downloads/
+
+    echo "Downloading ActiveMQ and installing..."
+    sudo -u atlas wget http://apache.mirrors.tds.net//activemq/apache-activemq/5.5.1/apache-activemq-5.5.1-bin.tar.gz
+    sudo -u atlas tar -xzvf apache-activemq-5.5.1-bin.tar.gz
+
+    #move the relevant content to home directory
+    sudo -u atlas mv /home/atlas/downloads/apache-activemq-5.5.1 /home/atlas/
+
+    #go to the bin directory
+    cd /home/atlas/apache-activemq-5.5.1/bin
+    echo "Starting up ActiveMQ..."
+    sudo -u atlas java -jar /home/atlas/apache-activemq-5.5.1/bin/run.jar start &
+    echo "ActiveMQ successfully started."
+}
+
 function deploy_app {
     echo "Starting up proper ownership on atlas files..."
-    chown -R glassfish:glassfishadm /opt/openstack/atlas/
-    chown -R root:glassfishadm /etc/openstack/atlas/
+    chown -R atlas:glassfishadm /opt/openstack/atlas/
+    chown -R atlas:glassfishadm /etc/openstack/atlas/
 
     echo "Starting up Glassfish..."
-    sudo -u glassfish /home/glassfish/glassfish/bin/asadmin start-domain domain1
+    sudo -u atlas /home/atlas/glassfish/bin/asadmin start-domain domain1
+    echo "Glassfish successfully started."
 
     echo "Deploying Atlas WAR..."
     WAR_FILE=`ls /opt/openstack/atlas/api/*.war`
-    sudo -u glassfish /home/glassfish/glassfish/bin/asadmin deploy --contextroot "/atlas" ${WAR_FILE}
+    sudo -u atlas /home/atlas/glassfish/bin/asadmin deploy --contextroot "/atlas" ${WAR_FILE}
+    echo "WAR successfully deployed."
 
     return 0
+}
+
+function seed_database {
+    echo "Seeding database with dummy data (cluster, hosts, vips, etc.)..."
+    mysql -u atlas --password=password -D openstack_atlas < /opt/openstack/atlas/db/core-seed.sql
+    echo "Database successfully seeded."
 }
 
 case "$1" in
@@ -150,7 +176,11 @@ case "$1" in
         configure_java
         install_glassfish
         configure_mysql
-        deploy_app  
+        install_and_start_activemq
+        deploy_app
+        seed_database
+
+        echo "Installation completed successfully. Atlas API available at http://localhost:8080/atlas"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
