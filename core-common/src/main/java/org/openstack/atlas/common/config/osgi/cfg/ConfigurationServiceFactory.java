@@ -12,7 +12,7 @@ import java.util.Properties;
 public class ConfigurationServiceFactory implements ServiceFactory {
 
     private static final Log LOG = LogFactory.getLog(ConfigurationServiceFactory.class);
-    private static final String DEFAULT_CONFIGURATION_LOCATION = "/etc/openstack/atlas/container.conf";
+    private static final String DEFAULT_CONFIGURATION_LOCATION = "/etc/openstack/atlas/config/public-api.conf";
 
     @Override
     public Object getService(Bundle bundle, ServiceRegistration sr) {

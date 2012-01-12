@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RestApiConfiguration extends ApacheCommonsConfiguration {
-    public static final String defaultConfigurationLocation = "/etc/openstack/atlas/public-api.conf";
+    public static final String defaultConfigurationLocation = "/etc/openstack/atlas/config/public-api.conf";
 
     public RestApiConfiguration() {
         super(defaultConfigurationLocation);

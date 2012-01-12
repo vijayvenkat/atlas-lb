@@ -22,7 +22,7 @@
 
     <!--STANDALONE SPRING SETTINGS-->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="file:/etc/openstack/atlas/public-api.conf"/>
+        <property name="location" value="file:/etc/openstack/atlas/config/public-api.conf"/>
     </bean>
 
     <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
