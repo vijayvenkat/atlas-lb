@@ -40,3 +40,18 @@ Getting Started
     http://wiki.openstack.org/Atlas-LB (API Documentation)
     https://launchpad.net/atlas-lb (Process Management)
     http://openstack.org/ (Openstack)
+
+
+Installation with apt-get
+-------------------------
+  1) Add the following repositories to your sources.list file:
+
+    'deb http://50.57.100.173:81/packages/openstack-repo lucid main'
+    'deb http://archive.canonical.com/ lucid partner'
+
+  2) Run 'apt-get update'
+
+  3) Run 'apt-get install openstack-atlas' to install the main component
+
+  4) Run 'apt-get install openstack-atlas-jobs' to install the jobs component
+
