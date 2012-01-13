@@ -126,6 +126,14 @@
                                             </mapper>
                                         </data>
                                         <data>
+                                            <src>${project.basedir}/src/deb/contrib/java</src>
+                                            <type>directory</type>
+                                            <mapper>
+                                                <type>perm</type>
+                                                <prefix>/opt/openstack/atlas/java</prefix>
+                                            </mapper>
+                                        </data>
+                                        <data>
                                             <src>${project.build.directory}/${project.build.finalName}.war</src>
                                             <type>file</type>
                                             <mapper>

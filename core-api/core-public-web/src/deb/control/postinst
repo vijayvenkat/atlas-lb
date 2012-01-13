@@ -62,6 +62,13 @@ function configure_java {
     echo "JAVA_HOME=/usr/lib/jvm/java-6-sun" >> /etc/environment
     echo "AS_JAVA=/usr/lib/jvm/java-6-sun" >> /etc/environment
 
+    echo "Updating java security to include proper AES encryption method..."
+    mv /usr/lib/jvm/java-6-sun/jre/lib/security/US_export_policy.jar /usr/lib/jvm/java-6-sun/jre/lib/security/US_export_policy.old.jar
+    mv /usr/lib/jvm/java-6-sun/jre/lib/security/local_policy.jar /usr/lib/jvm/java-6-sun/jre/lib/security/local_policy.old.jar
+    mv /opt/openstack/atlas/java/US_export_policy.jar /usr/lib/jvm/java-6-sun/jre/lib/security/US_export_policy.jar
+    mv /opt/openstack/atlas/java/local_policy.jar /usr/lib/jvm/java-6-sun/jre/lib/security/local_policy.jar
+    echo "Java security updated successfully."
+
     return 0
 }
 

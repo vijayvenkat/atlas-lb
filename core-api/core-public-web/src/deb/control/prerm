@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+#TODO: Drop database
+#TODO: Remove JAVA_HOME variables from /etc/environment and /etc/bash.bashrc
+
 echo "Removing 'atlas' user..."
 sudo deluser atlas
 
