@@ -23,7 +23,7 @@ public class NSAdapterUtils
 {
     public static Log LOG = LogFactory.getLog(NSAdapterUtils.class.getName());
 
-    static String getLBURLStr(String serviceUrl, Integer accountId, String resourceType)
+    public String getLBURLStr(String serviceUrl, Integer accountId, String resourceType)
     {
     	String resourceUrl = serviceUrl + "/" + accountId + "/" + resourceType;
 
@@ -31,31 +31,31 @@ public class NSAdapterUtils
     }
 
 
-    static String getLBURLStr(String serviceUrl, Integer accountId, String resourceType, Integer resourceId)
+    public String getLBURLStr(String serviceUrl, Integer accountId, String resourceType, Integer resourceId)
     {
-    	String resourceUrl = NSAdapterUtils.getLBURLStr(serviceUrl, accountId, resourceType) + "/" + resourceId;
+    	String resourceUrl = getLBURLStr(serviceUrl, accountId, resourceType) + "/" + resourceId;
 
         return resourceUrl;
     }
 
 
-    static String getLBURLStr(String serviceUrl, Integer accountId, String resourceType, Integer resourceId, String childResourceType)
+    public String getLBURLStr(String serviceUrl, Integer accountId, String resourceType, Integer resourceId, String childResourceType)
     {
-    	String resourceUrl = NSAdapterUtils.getLBURLStr(serviceUrl, accountId, resourceType, resourceId) + "/" + childResourceType;
+    	String resourceUrl = getLBURLStr(serviceUrl, accountId, resourceType, resourceId) + "/" + childResourceType;
 
         return resourceUrl;
     }
 
 
-    static String getLBURLStr(String serviceUrl, Integer accountId, String resourceType, Integer resourceId, String childResourceType, Integer childResourceId)
+    public String getLBURLStr(String serviceUrl, Integer accountId, String resourceType, Integer resourceId, String childResourceType, Integer childResourceId)
     {
-    	String resourceUrl = NSAdapterUtils.getLBURLStr(serviceUrl, accountId, resourceType, resourceId, childResourceType) + "/" + childResourceId;
+    	String resourceUrl = getLBURLStr(serviceUrl, accountId, resourceType, resourceId, childResourceType) + "/" + childResourceId;
 
         return resourceUrl;
     }
 
     
-    static String performRequest(String method, String urlStr, String requestBody) 
+    public String performRequest(String method, String urlStr, String requestBody)
            throws AdapterException
     {
         LOG.debug(String.format("Service URL string: '%s'...", urlStr));
@@ -85,14 +85,14 @@ public class NSAdapterUtils
     }
 
 
-    static void performRequest(String method, String urlStr) 
+    public void performRequest(String method, String urlStr)
            throws AdapterException
     {
-        NSAdapterUtils.performRequest(method, urlStr, null);
+        performRequest(method, urlStr, null);
     }
 
 
-    static Object getResponseObject(String response) 
+    public Object getResponseObject(String response)
            throws AdapterException
     {
         String requestBody;
@@ -112,7 +112,7 @@ public class NSAdapterUtils
 	}
 
 
-    static String getRequestBody(Object marshalObject) 
+    public String getRequestBody(Object marshalObject)
            throws AdapterException
     {
         String requestBody;
@@ -141,7 +141,7 @@ public class NSAdapterUtils
 
 
 
-    static void populateNSLoadBalancer(LoadBalancer lb, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.LoadBalancer nsLB) 
+    public void populateNSLoadBalancer(LoadBalancer lb, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.LoadBalancer nsLB)
            throws BadRequestException
     {
         com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.VirtualIp nsVIP = new com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.VirtualIp();
@@ -164,11 +164,11 @@ public class NSAdapterUtils
 
         // If we find an IPv6 address we use that one. If not we use an IPv4 address
         
-        NSAdapterUtils.populateNSVIP6(vips6, nsVIP);
+        populateNSVIP6(vips6, nsVIP);
         
         if (nsVIP.getId() <= 0)
         {
-            NSAdapterUtils.populateNSVIP(vips, nsVIP);
+            populateNSVIP(vips, nsVIP);
         }
         
         if (nsVIP.getId() <= 0)
@@ -176,11 +176,11 @@ public class NSAdapterUtils
             throw new BadRequestException("VirtualIP element of loadbalancer missing....", new Error());
         }     
         
-        NSAdapterUtils.populateNSNodes(nodes, nsLB.getNodes());
+        populateNSNodes(nodes, nsLB.getNodes());
         
 		if(sp != null)
 		{
-			NSAdapterUtils.populateSessionPersistence(lb.getSessionPersistence(), nsPersistence);
+			populateSessionPersistence(lb.getSessionPersistence(), nsPersistence);
 		}
 		else
 		{
@@ -189,14 +189,14 @@ public class NSAdapterUtils
 
     	if (monitor != null) 
     	{
-            NSAdapterUtils.populateNSHealthMonitor(monitor, nsMon);
+            populateNSHealthMonitor(monitor, nsMon);
         } else {
             nsMon = null; 
         }
 
     	if (throttle != null) 
     	{
-            NSAdapterUtils.populateConnectionThrottle(throttle, nsThrottle);
+            populateConnectionThrottle(throttle, nsThrottle);
         } else {
             nsThrottle = null; 
         }
@@ -216,7 +216,7 @@ public class NSAdapterUtils
 		nsLB.setConnectionThrottle(nsThrottle);
     }
 
-    static void populateNSVIP(Set<LoadBalancerJoinVip> vips, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.VirtualIp nsVIP) 
+    public void populateNSVIP(Set<LoadBalancerJoinVip> vips, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.VirtualIp nsVIP)
            throws BadRequestException
                  
     {
@@ -274,7 +274,7 @@ public class NSAdapterUtils
     }
 
 
-    static void populateNSVIP6(Set<LoadBalancerJoinVip6> vips6, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.VirtualIp nsVIP) 
+    public void populateNSVIP6(Set<LoadBalancerJoinVip6> vips6, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.VirtualIp nsVIP)
            throws BadRequestException
                  
     {
@@ -320,7 +320,7 @@ public class NSAdapterUtils
     }
     
     
-    static com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.Node translateNode(Node node, boolean forUpdate) 
+    public com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.Node translateNode(Node node, boolean forUpdate)
            throws BadRequestException
     {
 
@@ -358,7 +358,7 @@ public class NSAdapterUtils
 	}
 
 
-    static void populateNSNodes(Collection<Node> nodes, List<com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.Node> nsNodes) 
+    public void populateNSNodes(Collection<Node> nodes, List<com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.Node> nsNodes)
            throws BadRequestException
     {
 
@@ -374,7 +374,7 @@ public class NSAdapterUtils
     	}
     }
 
-    static void populateNSHealthMonitor(HealthMonitor monitor, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.HealthMonitor nsMon) 
+    public void populateNSHealthMonitor(HealthMonitor monitor, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.HealthMonitor nsMon)
            throws BadRequestException 
     {
 
@@ -416,20 +416,20 @@ public class NSAdapterUtils
     }
 
 
-	static com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.LoadBalancer
+	public com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.LoadBalancer
 			getLB(LoadBalancerEndpointConfiguration config, Integer lbId, Integer accountId) 
            throws AdapterException 
 	{
         String resourceType = "loadbalancers";
         Integer resourceId = lbId;
 		String serviceUrl = config.getHost().getEndpoint();
-        String resourceUrl = NSAdapterUtils.getLBURLStr(serviceUrl, accountId, resourceType, resourceId);
+        String resourceUrl = getLBURLStr(serviceUrl, accountId, resourceType, resourceId);
 
-        String nsLB = NSAdapterUtils.performRequest("GET", resourceUrl, "");
-		return (com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.LoadBalancer) NSAdapterUtils.getResponseObject(nsLB);
+        String nsLB = performRequest("GET", resourceUrl, "");
+		return (com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.LoadBalancer) getResponseObject(nsLB);
 	}
 
-	static List<com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.Node> 
+	public List<com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.Node>
 	getAllNodes(LoadBalancerEndpointConfiguration config, Integer lbId, Integer accountId) 
            throws AdapterException 
     {
@@ -437,15 +437,15 @@ public class NSAdapterUtils
         Integer resourceId = lbId;
         String childResourceType = "nodes";
 		String serviceUrl = config.getHost().getEndpoint();
-        String resourceUrl = NSAdapterUtils.getLBURLStr(serviceUrl, accountId, resourceType, resourceId, childResourceType);
+        String resourceUrl = getLBURLStr(serviceUrl, accountId, resourceType, resourceId, childResourceType);
 
-        String nodesAsString = NSAdapterUtils.performRequest("GET", resourceUrl, "");
+        String nodesAsString = performRequest("GET", resourceUrl, "");
 		com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.Nodes nsNodes = (com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.Nodes) 
-																						NSAdapterUtils.getResponseObject(nodesAsString);
+																						getResponseObject(nodesAsString);
 		return nsNodes.getNodes();
 	
 	}
-    static void populateSessionPersistence(SessionPersistence sp, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.SessionPersistence nsSP) 
+    public void populateSessionPersistence(SessionPersistence sp, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.SessionPersistence nsSP)
            throws BadRequestException
     {
 		String pt = sp.getPersistenceType();
@@ -460,7 +460,7 @@ public class NSAdapterUtils
 	}
 
 
-    static void populateConnectionThrottle(ConnectionThrottle throttle, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.ConnectionThrottle nsThrottle) 
+    public void populateConnectionThrottle(ConnectionThrottle throttle, com.citrix.cloud.netscaler.atlas.docs.loadbalancers.api.v1.ConnectionThrottle nsThrottle)
            throws BadRequestException 
     {
 		nsThrottle.setRateInterval(throttle.getRateInterval());

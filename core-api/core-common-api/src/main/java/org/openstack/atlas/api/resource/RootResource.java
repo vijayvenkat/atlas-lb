@@ -10,7 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 @Path("{accountId: [-+]?[0-9][0-9]*}")
 public class RootResource {
     @PathParam("accountId")
-    private Integer accountId;
+    protected Integer accountId;
     @Context
     private HttpHeaders requestHeaders;
 
