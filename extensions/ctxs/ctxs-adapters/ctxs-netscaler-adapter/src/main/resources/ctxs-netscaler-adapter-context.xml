@@ -15,11 +15,11 @@
     <context:component-scan base-package="org.openstack.atlas.ctxs.adapter.netscaler"/>
     <context:annotation-config/>
     <!--DOZER SETTINGS-->
-    <bean id="CtxsAdapterDozerMapper" class="org.dozer.DozerBeanMapper">
-        <property name="mappingFiles">
-            <list>
-                <value>dozer-ctxs-adapter-map.xml</value>
-            </list>
-        </property>
-    </bean>
+    <!--<bean id="CtxsAdapterDozerMapper" class="org.dozer.DozerBeanMapper">-->
+        <!--<property name="mappingFiles">-->
+            <!--<list>-->
+                <!--<value>dozer-ctxs-adapter-map.xml</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
 </beans>

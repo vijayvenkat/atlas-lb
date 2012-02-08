@@ -1,5 +1,7 @@
 package org.openstack.atlas.api.validation.validator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openstack.atlas.api.validation.Validator;
 import org.openstack.atlas.api.validation.validator.builder.LoadBalancerValidatorBuilder;
 import org.openstack.atlas.api.validation.result.ValidatorResult;
@@ -14,11 +16,14 @@ import static org.openstack.atlas.api.validation.ValidatorBuilder.build;
 @Component
 @Scope("request")
 public class LoadBalancerValidator implements ResourceValidator<LoadBalancer> {
+    public static Log LOG = LogFactory.getLog(LoadBalancerValidator.class.getName());
     protected Validator<LoadBalancer> validator;
     protected LoadBalancerValidatorBuilder ruleBuilder;
 
     @Autowired
     public LoadBalancerValidator(LoadBalancerValidatorBuilder ruleBuilder) {
+        LOG.info("inside log + LoadBalancerValidator constructor");
+        System.out.println("printing inside + LoadBalancerValidator " );
         this.ruleBuilder = ruleBuilder;
         validator = build(ruleBuilder);
     }

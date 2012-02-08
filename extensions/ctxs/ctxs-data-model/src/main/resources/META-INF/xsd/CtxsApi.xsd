@@ -17,13 +17,12 @@
     <xsd:include vc:minVersion="1.0" vc:maxVersion="1.1"
              schemaLocation="../../../../../../../../core-data-model/src/main/resources/META-INF/xsd/CoreApi.xsd"/>
 
-    
     <xsd:redefine vc:minVersion="1.1" schemaLocation="../../../../../../../../core-data-model/src/main/resources/META-INF/xsd/CoreApi.xsd">
         <xsd:complexType name="loadBalancer">
             <xsd:complexContent>
                 <xsd:extension base="tns:loadBalancer">
                     <xsd:sequence>
-                        <xsd:element ref="ctxs:certificatesRef" use="optional"/>
+                        <xsd:element name="certificatesRef" type="ctxs:certificatesRef" minOccurs="0"/>
                     </xsd:sequence>
                     <xsd:attribute ref="ctxs:sslMode"/>
                 </xsd:extension>

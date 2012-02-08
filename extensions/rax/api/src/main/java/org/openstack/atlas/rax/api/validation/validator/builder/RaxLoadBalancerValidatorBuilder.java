@@ -34,6 +34,7 @@ public class RaxLoadBalancerValidatorBuilder extends LoadBalancerValidatorBuilde
         super(algorithmType, protocolType, nodeValidatorBuilder, virtualIpValidatorBuilder, healthMonitorValidatorBuilder, connectionThrottleValidatorBuilder, sessionPersistenceValidatorBuilder);
 
         // POST EXPECTATIONS
+        System.out.println("anies is " + validationTarget().getAnies());
         result(validationTarget().getAnies()).if_().exist().then().must().delegateTo(new RaxLoadBalancerValidator().getValidator(), POST).forContext(POST);
         result(validationTarget().getOtherAttributes()).if_().not().adhereTo(new MustBeEmptyOrNull()).then().must().adhereTo(new Verifier<Map<QName, String>>() {
             @Override

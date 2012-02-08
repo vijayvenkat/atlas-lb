@@ -32,13 +32,13 @@ public class CreateCertificateListener  extends BaseListener {
 
         HashMap<String, Object> queueData = dataContainer.getHashData();
 
-        List<org.openstack.atlas.api.v1.extensions.ctxs.Certificate> apiCerts = ( List<org.openstack.atlas.api.v1.extensions.ctxs.Certificate> ) queueData.get("API_CERTS");
         List<Certificate> dbcerts = ( List<Certificate> ) queueData.get("DOMAIN_CERTS");
+        // TODO collect the certificates from db rather than from message container
         boolean berror = false;
         try
         {
             LOG.info(String.format("Creating '%d' certificates.", dbcerts.size()));
-            ((CtxsReverseProxyLoadBalancerService)reverseProxyLoadBalancerService).createCertificates(dbcerts, apiCerts);
+            ((CtxsReverseProxyLoadBalancerService)reverseProxyLoadBalancerService).createCertificates(dbcerts);
             LOG.info(String.format("Successfully created '%d' certificates.", dbcerts.size()));
 
         } catch (Exception e) {

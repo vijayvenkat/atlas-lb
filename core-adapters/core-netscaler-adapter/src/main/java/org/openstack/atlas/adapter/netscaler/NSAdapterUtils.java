@@ -278,13 +278,17 @@ public class NSAdapterUtils
            throws BadRequestException
                  
     {
+        LOG.debug(String.format("Inside populateNSVIP6"));
 
-        if (vips6 == null)
+        if (vips6 == null || vips6.size() <= 0)
         {
+            LOG.debug(String.format("Inside populateNSVIP6 0.1"));
             nsVIP.setId(-1);
             return;
         }   
-        
+
+        LOG.debug(String.format("Inside populateNSVIP6 2"));
+
         if (vips6.size() > 1)
         {
             throw new BadRequestException("Core adapters can support only one VIP per loadbalancer", new Error());
@@ -293,6 +297,7 @@ public class NSAdapterUtils
 
         for (LoadBalancerJoinVip6 lbjoinVip : vips6)
         {
+            LOG.debug(String.format("populatinv vip6 2.1"));
             VirtualIpv6 vip = lbjoinVip.getVirtualIp();
 
             Integer vipId = vip.getId(); 

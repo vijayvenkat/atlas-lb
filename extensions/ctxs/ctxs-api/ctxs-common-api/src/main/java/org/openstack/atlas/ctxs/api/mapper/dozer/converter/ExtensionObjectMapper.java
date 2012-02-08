@@ -36,9 +36,11 @@ public final class ExtensionObjectMapper {
             if (any instanceof Element) {
                 Element element = (Element) any;
                 try {
-                    JAXBContext jc = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
+                    JAXBContext jc = JAXBContext.newInstance(classType);
+//                    JAXBContext jc = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
                     Unmarshaller unmarshaller = jc.createUnmarshaller();
                     Object o = unmarshaller.unmarshal(element);
+                    LOG.debug("Comparing Class: " + o.getClass());
                     if(classType.isInstance(o)) {
                         return classType.cast(o);
                     }
@@ -47,7 +49,8 @@ public final class ExtensionObjectMapper {
                 }
             }
         }
-        
+        LOG.debug("getAnyElement Return null");
+
         return null;
     }
 }

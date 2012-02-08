@@ -33,7 +33,7 @@ public class CertificateRepositoryImpl implements CertificateRepository{
     public Certificate getById(Integer id) throws EntityNotFoundException {
         Certificate certificate = entityManager.find(Certificate.class, id);
         if (certificate == null) {
-            throw new EntityNotFoundException("Certificate not found");
+            throw new EntityNotFoundException(String.format("Certificate for id %d not found", id));
         }
         return certificate;
     }

@@ -13,7 +13,7 @@ import java.util.Set;
 @Service
 public interface CtxsReverseProxyLoadBalancerService extends ReverseProxyLoadBalancerService{
 
-    void createCertificates(List<Certificate> dbCerts, List<org.openstack.atlas.api.v1.extensions.ctxs.Certificate> apiCerts) throws Exception;
+    void createCertificates(List<Certificate> dbCerts) throws Exception;
     Certificate getCertificate(Certificate certificate) throws Exception;
     void deleteCertificate(Certificate certificate) throws Exception;
 }

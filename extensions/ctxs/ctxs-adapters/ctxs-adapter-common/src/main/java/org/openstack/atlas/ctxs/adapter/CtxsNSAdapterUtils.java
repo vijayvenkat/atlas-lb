@@ -32,10 +32,7 @@ public class CtxsNSAdapterUtils extends NSAdapterUtils
            throws BadRequestException
     {
         super.populateNSLoadBalancer(lb, nsLB);
-
-        if(lb instanceof CtxsLoadBalancer) { // extension
-            populateExtensionNSLoadBalancer((CtxsLoadBalancer)lb, nsLB);
-        }
+        populateExtensionNSLoadBalancer((CtxsLoadBalancer)lb, nsLB);
 
     }
 

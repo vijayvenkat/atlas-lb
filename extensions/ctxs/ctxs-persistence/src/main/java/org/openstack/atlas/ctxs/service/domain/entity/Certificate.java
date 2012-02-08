@@ -60,8 +60,32 @@ public class Certificate extends org.openstack.atlas.service.domain.entity.Entit
     @Column(name = "publicKeySize")
     private String publicKeySize;
 
+    @Lob
+    @Column(name = "certificateContent")
+    private String certificatecontent;
+
+    @Lob
+    @Column(name = "keyContent")
+    private String keycontent;
+
     public String getSubject() {
         return subject;
+    }
+
+    public String getCertificatecontent() {
+        return certificatecontent;
+    }
+
+    public void setCertificatecontent(String certificatecontent) {
+        this.certificatecontent = certificatecontent;
+    }
+
+    public String getKeycontent() {
+        return keycontent;
+    }
+
+    public void setKeycontent(String keycontent) {
+        this.keycontent = keycontent;
     }
 
     public void setSubject(String subject) {

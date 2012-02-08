@@ -46,7 +46,7 @@
         </field>
     </mapping>
 
-    <mapping map-null="false">
+    <mapping map-null="false" map-id="ctxs-lb-api-domain-mapping" >
         <class-a bean-factory="org.openstack.atlas.ctxs.api.mapper.dozer.factory.CtxsLoadBalancerFactory">
             org.openstack.atlas.core.api.v1.LoadBalancer
         </class-a>
@@ -87,14 +87,11 @@
             <a-hint>java.util.Map</a-hint>
             <b-hint>java.lang.String</b-hint>
         </field>
-        <field custom-converter="org.openstack.atlas.rax.api.mapper.dozer.converter.CertificatesRefConverter">
+        <field custom-converter="org.openstack.atlas.ctxs.api.mapper.dozer.converter.CertificatesRefConverter">
             <a>anies</a>
             <b>certificates</b>
             <a-hint>java.util.List</a-hint>
             <b-hint>org.openstack.atlas.ctxs.service.domain.entity.CertificateRef</b-hint>
         </field>
     </mapping>
-
-</mappings>
-
 </mappings>

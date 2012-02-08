@@ -17,6 +17,17 @@ public class CtxsLoadBalancer extends LoadBalancer  implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "loadbalancer", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<CertificateRef> certificates = new HashSet<CertificateRef>();
 
+    @Column(name = "sslMode", length = 64)
+    private String sslMode;
+
+    public String getSslMode() {
+        return sslMode;
+    }
+
+    public void setSslMode(String sslMode) {
+        this.sslMode = sslMode;
+    }
+
     public Set<CertificateRef> getCertificates() {
         return certificates;
     }

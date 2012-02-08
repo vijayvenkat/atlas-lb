@@ -19,7 +19,7 @@ import java.util.Map;
 
 public interface CtxsLoadBalancerAdapter extends LoadBalancerAdapter {
 
-    void createCertificates(LoadBalancerEndpointConfiguration config, List<Certificate> loadCert, List<org.openstack.atlas.api.v1.extensions.ctxs.Certificate> apiCert) throws AdapterException;
+    void createCertificates(LoadBalancerEndpointConfiguration config, List<Certificate> loadCert) throws AdapterException;
     Certificate getCertificate(LoadBalancerEndpointConfiguration config, Certificate certificate) throws AdapterException;
     void deleteCertificate(LoadBalancerEndpointConfiguration config, Certificate certificate) throws AdapterException;
 }

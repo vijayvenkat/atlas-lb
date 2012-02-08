@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-
-    <import resource="ctxs-jms-queues.xml" />
-
-    <context:component-scan base-package="org.openstack.atlas.ctxs"/>    
-
-    <context:annotation-config />
-
+       http://www.springframework.org/schema/context/spring-context.xsd">
 
     <bean id="loadBalancingPublicImpl" class="org.openstack.atlas.ctxs.api.resource.CtxsRootResource" scope="request"/>
 
@@ -24,15 +15,17 @@
     <bean id="dozerBeanMapper" class="org.dozer.DozerBeanMapper">
         <property name="mappingFiles">
             <list>
-                <value>dozer-config-map.xml</value> 
-                <value>dozer-load-balancer-map.xml</value>                           
-                <value>dozer-ctxs-load-balancer-map.xml</value>            
+                <value>dozer-config-map.xml</value>
+                <!--<value>dozer-load-balancer-map.xml</value>-->
+                <value>dozer-ctxs-load-balancer-map.xml</value>
                 <value>dozer-ctxs-certificate-map.xml</value>
                 <value>dozer-virtual-ip-map.xml</value>
                 <value>dozer-node-map.xml</value>
                 <value>dozer-health-monitor-map.xml</value>
-                <value>dozer-session-persistence-map.xml</value>                
+                <value>dozer-session-persistence-map.xml</value>
                 <value>dozer-connection-throttle-map.xml</value>
+                <value>dozer-ctxs-adapter-map.xml</value>
+                <!--Why should this be in api? <value>dozer-ctxs-adapter-map.xml</value>-->
                 <value>dozer-usage-map.xml</value>
             </list>
         </property>
@@ -43,5 +36,3 @@
         </property>
     </bean>
 </beans>
-
-

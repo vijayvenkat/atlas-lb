@@ -8,7 +8,7 @@
             xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
             jaxb:extensionBindingPrefixes="xjc">
 
-    <xsd:attribute name="sslmode" type="xsd:string" />
+    <xsd:attribute name="sslMode" type="xsd:string" />
 
     <xsd:element name="certificates" type="tns:CertificatesDef"/>
 
@@ -44,9 +44,23 @@
     </xsd:complexType>
 
 
+    <xsd:element name="ctxsextensions" type="tns:ctxsextensions"/>
+
+    <xsd:complexType name="ctxsextensions">
+        <xsd:sequence>
+            <xsd:element name="certificates" minOccurs="1" maxOccurs="1" type="tns:certificatesRef">
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <!--certificate is not working out, so using certificateref-->
+    <!--<xsd:element name="certificatesRef" type="tns:certificatesRef"/>-->
+
     <xsd:complexType name="certificatesRef">
         <xsd:sequence>
-            <xsd:element name="certificate" minOccurs="1" maxOccurs="unbounded" type="tns:certificateRef"/>
+            <xsd:element name="certificate" minOccurs="1" maxOccurs="unbounded" type="tns:certificateRef">
+            </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
 

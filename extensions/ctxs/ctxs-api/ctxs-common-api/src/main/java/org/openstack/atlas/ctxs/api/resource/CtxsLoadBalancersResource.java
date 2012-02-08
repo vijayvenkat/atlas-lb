@@ -56,7 +56,7 @@ public class CtxsLoadBalancersResource extends org.openstack.atlas.api.resource.
             return ResponseFactory.getValidationFaultResponse(result);
         }
         try {
-            CtxsLoadBalancer ctxsLoadBalancer = dozerMapper.map(_loadBalancer, CtxsLoadBalancer.class);
+            CtxsLoadBalancer ctxsLoadBalancer = dozerMapper.map(_loadBalancer, CtxsLoadBalancer.class, "ctxs-lb-api-domain-mapping");
             ctxsLoadBalancer.setAccountId(accountId);
 
             //This call should be moved somewhere else

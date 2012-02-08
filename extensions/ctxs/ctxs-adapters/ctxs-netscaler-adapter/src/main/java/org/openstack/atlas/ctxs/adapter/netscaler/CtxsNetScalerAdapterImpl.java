@@ -31,26 +31,28 @@ public class CtxsNetScalerAdapterImpl extends NetScalerAdapterImpl implements Ct
     public static Log LOG = LogFactory.getLog(CtxsNetScalerAdapterImpl.class.getName());
     
     @Autowired
-    @Qualifier("CtxsAdapterDozerMapper")
+//    @Qualifier("CtxsAdapterDozerMapper")
     protected DozerBeanMapper dozerMapper;
 
     @Override
     public void createLoadBalancer(LoadBalancerEndpointConfiguration config, org.openstack.atlas.service.domain.entity.LoadBalancer lb)
             throws AdapterException 
     {
-    
-        if (lb instanceof org.openstack.atlas.ctxs.service.domain.entity.CtxsLoadBalancer) {
-             LOG.info("Reaching CtxsNetScalerAdapterImpl.createLoadBalancer() with extended loadbalancer");
+        super.createLoadBalancer(config,lb);
+//      lb will always be instanceof org.openstack.atlas.ctxs.service.domain.entity.CtxsLoadBalancer. Is there any case it will be core entity LoadBalancer?
 
-             // NOP
-        } else {
-             LOG.info("Reaching CtxsNetScalerAdapterImpl.createLoadBalancer() with core loadbalancer");
-             super.createLoadBalancer(config,lb);        
-        }          
+//        if (lb instanceof org.openstack.atlas.ctxs.service.domain.entity.CtxsLoadBalancer) {
+//             LOG.info("Reaching CtxsNetScalerAdapterImpl.createLoadBalancer() with extended loadbalancer");
+//
+//             // NOP
+//        } else {
+//             LOG.info("Reaching CtxsNetScalerAdapterImpl.createLoadBalancer() with core loadbalancer");
+//             super.createLoadBalancer(config,lb);
+//        }
     }
 
     @Override
-    public void createCertificates(LoadBalancerEndpointConfiguration config, List<org.openstack.atlas.ctxs.service.domain.entity.Certificate> dbCerts, List<org.openstack.atlas.api.v1.extensions.ctxs.Certificate> apiCerts) throws AdapterException
+    public void createCertificates(LoadBalancerEndpointConfiguration config, List<org.openstack.atlas.ctxs.service.domain.entity.Certificate> dbCerts) throws AdapterException
     {
         LOG.debug("Reached CtxsNetScalerAdapterImpl.createCertificates");
         Certificates certificates = new Certificates();
@@ -59,9 +61,9 @@ public class CtxsNetScalerAdapterImpl extends NetScalerAdapterImpl implements Ct
             LOG.debug("Mapping files for dozer " + mappingFile);
         }
 
-        for(int index =0; index < apiCerts.size(); index++) {
-            Certificate cloudCertificate = (Certificate)dozerMapper.map(apiCerts.get(index), Certificate.class, "ctxs-cert-api-cloud-mapping");
-            cloudCertificate.setId(dbCerts.get(index).getId());
+        for(int index =0; index < dbCerts.size(); index++) {
+            Certificate cloudCertificate = (Certificate)dozerMapper.map(dbCerts.get(index), Certificate.class, "ctxs-cert-cloud-domain-mapping");
+//            cloudCertificate.setId(dbCerts.get(index).getId());
             certificates.getCertificates().add(cloudCertificate);
         }
 

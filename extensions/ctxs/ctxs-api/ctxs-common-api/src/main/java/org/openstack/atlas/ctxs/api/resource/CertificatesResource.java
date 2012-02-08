@@ -73,7 +73,6 @@ public class CertificatesResource extends CommonDependencyProvider  {
 
             CtxsMessageDataContainer dataContainer = new CtxsMessageDataContainer();
             HashMap<String, Object> messageData = new HashMap<String, Object>();
-            messageData.put("API_CERTS", _certificates.getCertificates());
             messageData.put("DOMAIN_CERTS", dbcerts);
             dataContainer.setHashData(messageData);
 

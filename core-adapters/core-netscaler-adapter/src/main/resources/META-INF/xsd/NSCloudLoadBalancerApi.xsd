@@ -38,6 +38,7 @@
         <xsd:attribute name="protocol" type="xsd:string"/>
         <xsd:attribute name="port" type="xsd:int"/>
         <xsd:attribute name="status" type="xsd:string"/>
+        <xsd:attribute name="sslMode" type="xsd:string"/>
     </xsd:complexType>
 
 
