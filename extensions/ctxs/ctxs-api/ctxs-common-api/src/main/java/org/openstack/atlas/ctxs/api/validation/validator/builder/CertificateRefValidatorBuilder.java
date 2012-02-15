@@ -16,7 +16,6 @@ public class CertificateRefValidatorBuilder extends ValidatorBuilder<Certificate
     public CertificateRefValidatorBuilder() {
         super(CertificateRef.class);
 
-        result(validationTarget().getIdref()).must().exist().withMessage("Certificate idref field must be specified to designate the certificate to use.");
-    
+        result(validationTarget().getIdRef()).must().exist().withMessage("Certificate idRef field must be specified to designate the certificate to use.");
     }
 }

@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!--<module>rax</module>-->
+        <module>rax</module>
         <module>ctxs</module>
     </modules>
 

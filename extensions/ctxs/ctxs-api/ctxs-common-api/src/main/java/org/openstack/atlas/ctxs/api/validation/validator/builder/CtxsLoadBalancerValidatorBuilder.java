@@ -47,72 +47,40 @@ public class CtxsLoadBalancerValidatorBuilder extends LoadBalancerValidatorBuild
 
         // POST EXPECTATIONS
         result(validationTarget().getAnies()).if_().exist().then().must().delegateTo(new CtxsLoadBalancerValidator().getValidator(), POST).forContext(POST);
-//        Verifier<LoadBalancer> verifier = new Verifier<LoadBalancer>() {
-//            @Override
-//            public VerifierResult verify(LoadBalancer loadbalancer) {
-//                Map<QName, String> otherAttributes = loadbalancer.getOtherAttributes();
-//                final String protocol = loadbalancer.getProtocol();
-//                LOG.debug("Inside sslMode verification");
-//                String sslModeValue = ExtensionObjectMapper.getOtherAttribute(otherAttributes, "sslMode");
-//                if(sslModeValue != null)
-//                {
-//                    System.out.println("Protocol during verification " + protocol);
-//                    if(protocol != null)
-//                        return new VerifierResult(protocol.equals("HTTPS"));
-//                }
-//
-//                return new VerifierResult(true);
-//            }
-//        };
-//        result(validationTarget()).if_().not().adhereTo(new MustBeEmptyOrNull()).then().must().adhereTo(verifier).forContext(POST).withMessage("'sslMode' attribute can be set only if protocol is 'HTTPS'!");
-
-
-        Verifier<Map<QName, String>> verifier = new Verifier<Map<QName, String>>() {
+        Verifier<LoadBalancer> verifier = new Verifier<LoadBalancer>() {
             @Override
-            public VerifierResult verify(Map<QName, String> otherAttributes) {
-                LOG.debug("Inside sslMode verification");
+            public VerifierResult verify(LoadBalancer loadbalancer) {
+                Map<QName, String> otherAttributes = loadbalancer.getOtherAttributes();
+                final String protocol = loadbalancer.getProtocol();
                 String sslModeValue = ExtensionObjectMapper.getOtherAttribute(otherAttributes, "sslMode");
                 if(sslModeValue != null)
                 {
-                    System.out.println("target class is " + validationTarget().getClass());
-                    System.out.println("Protocol during verification " + validationTarget().getProtocol());
-                    if(validationTarget().getProtocol() != null)
-                        return new VerifierResult(validationTarget().getProtocol().equals("HTTPS"));
+                    if(protocol != null)
+                        return new VerifierResult(protocol.equals("HTTPS"));
                 }
 
                 return new VerifierResult(true);
             }
         };
+        if_().not().adhereTo(new MustBeEmptyOrNull()).then().must().adhereTo(verifier).forContext(POST).withMessage("'sslMode' attribute can be set only if protocol is 'HTTPS'!");
 
-        result(validationTarget().getOtherAttributes()).if_().not().adhereTo(new MustBeEmptyOrNull()).then().must().adhereTo(verifier).forContext(POST).withMessage("'sslMode' attribute can be set only if protocol is 'HTTPS'!");
-        Verifier<Map<QName, String>> verifier1 = new Verifier<Map<QName, String>>() {
+
+        Verifier<Map<QName, String>> sslValueVerifier = new Verifier<Map<QName, String>>() {
             @Override
             public VerifierResult verify(Map<QName, String> otherAttributes) {
-                LOG.debug("Inside sslMode verification");
                 String sslModeValue = ExtensionObjectMapper.getOtherAttribute(otherAttributes, "sslMode");
+                LOG.debug("Inside sslMode verification value: " + sslModeValue);
                 if(sslModeValue != null)
+                {
+                    LOG.debug("result Inside sslMode verification value: " + (sslModeValue.equals("PASSTHROUGH") || sslModeValue.equals("OFFLOAD") || sslModeValue.equals("OFFLOAD_AND_REENCRYPT")));
                     return new VerifierResult(sslModeValue.equals("PASSTHROUGH") || sslModeValue.equals("OFFLOAD") || sslModeValue.equals("OFFLOAD_AND_REENCRYPT"));
+                }
                 return new VerifierResult(true);
             }
         };
-        result(validationTarget().getOtherAttributes()).if_().not().adhereTo(new MustBeEmptyOrNull()).then().must().adhereTo(verifier1).
+        result(validationTarget().getOtherAttributes()).if_().not().adhereTo(new MustBeEmptyOrNull()).then().must().adhereTo(sslValueVerifier).
                             forContext(POST).withMessage("'sslMode' attribute must equal PASSTHROUGH or OFFLOAD or OFFLOAD_AND_REENCRYPT!");
 
-/*
-        Object validationTarget = validationTarget();
-        LOG.debug("inside constructor for CtxsLoadBalancerValidatorBuilder");
-        LOG.debug(String.format("validation target object class is: %s", validationTarget.getClass().getName()));
-        LOG.debug(String.format("validation target object name is: %s", ((org.openstack.atlas.core.api.v1.LoadBalancer) validationTarget).getName()));
-                
-        if (validationTarget instanceof LoadBalancer) {
-            LoadBalancer ctxsLoadBalancer = (LoadBalancer) validationTarget;
-        
-            result(ctxsLoadBalancer.getCertificates()).must().exist().forContext(POST).withMessage("Must provide at least 1 certificate for the load balancer.");
-            result(ctxsLoadBalancer.getCertificates()).must().haveSizeOfAtLeast(MIN_CERTIFICATES).forContext(POST).withMessage(String.format("Must have at least %d certificate(s).", MIN_CERTIFICATES));
-            result(ctxsLoadBalancer.getCertificates()).must().haveSizeOfAtMost(MAX_CERTIFICATES).forContext(POST).withMessage(String.format("Must not provide more than %d certificates per load balancer.", MAX_CERTIFICATES));
-            result(ctxsLoadBalancer.getCertificates()).if_().exist().then().must().delegateTo(new CertificateRefValidator(certRefValidatorBuilder).getValidator(), POST).forContext(POST);
-        }
-        */
         return;
     }
 }

@@ -5,6 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import org.openstack.atlas.api.response.ResponseFactory;
 import org.openstack.atlas.api.validation.context.HttpRequestType;
 import org.openstack.atlas.api.validation.result.ValidatorResult;
+import org.openstack.atlas.api.validation.validator.LoadBalancerValidator;
+import org.openstack.atlas.ctxs.api.validation.validator.CertificateValidator;
 import org.openstack.atlas.service.domain.operation.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,6 +45,9 @@ public class CertificatesResource extends CommonDependencyProvider  {
     protected Integer accountId;
 
     @Autowired
+    protected CertificateValidator validator;
+
+    @Autowired
     protected CertificateService certificateService;
 
     @Autowired
@@ -55,25 +60,27 @@ public class CertificatesResource extends CommonDependencyProvider  {
     @Consumes({APPLICATION_XML, APPLICATION_JSON})
     public Response createCertificates(Certificates _certificates) {
         try {
-            List<Certificate> dbcerts = new ArrayList<Certificate>();
+            List<Certificate> certsForAsync = new ArrayList<Certificate>();
             Certificates returnCerts = new Certificates();
-        for (org.openstack.atlas.api.v1.extensions.ctxs.Certificate apiCert: _certificates.getCertificates())
+            for (org.openstack.atlas.api.v1.extensions.ctxs.Certificate apiCert: _certificates.getCertificates())
             {
-                LOG.debug("apicertificate encoding " + apiCert.getEncoding());
-                LOG.debug("apicertificate certificateFormat" + apiCert.getFormat());
+                ValidatorResult result = validator.validate(apiCert, HttpRequestType.POST);
+
+                if (!result.passedValidation()) {
+                    return ResponseFactory.getValidationFaultResponse(result);
+                }
+
                 Certificate domainCertificate = dozerMapper.map(apiCert, Certificate.class, "ctxs-cert-api-domain-mapping");
-                LOG.debug("domaincertificate certificateFormat" + domainCertificate.getCertificateFormat());
-                LOG.debug("domaincertificate certificateEncoding" + domainCertificate.getCertificateEncodingType());
                 domainCertificate.setAccountId(accountId);
                 domainCertificate.setUserName(getUserName(requestHeaders));
                 Certificate dbcert = certificateService.createCertificate(domainCertificate, apiCert);
-                returnCerts.getCertificates().add(dozerMapper.map(dbcert, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-api-domain-mapping"));
-                dbcerts.add(dbcert);
+                returnCerts.getCertificates().add(dozerMapper.map(dbcert, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-domain-api-mapping"));
+                certsForAsync.add(getCertForAsync(dbcert));
             }
 
             CtxsMessageDataContainer dataContainer = new CtxsMessageDataContainer();
             HashMap<String, Object> messageData = new HashMap<String, Object>();
-            messageData.put("DOMAIN_CERTS", dbcerts);
+            messageData.put("Certificates", certsForAsync);
             dataContainer.setHashData(messageData);
 
             asyncService.callAsyncLoadBalancingOperation("CREATE_CERTIFICATES", dataContainer);
@@ -96,7 +103,7 @@ public class CertificatesResource extends CommonDependencyProvider  {
         List<Certificate> certificates = certificateRepository.getByAccountId(accountId);
         
         for (Certificate certificate : certificates) {
-            _certificates.getCertificates().add(dozerMapper.map(certificate, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-api-domain-mapping"));
+            _certificates.getCertificates().add(dozerMapper.map(certificate, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-domain-api-mapping"));
         }
         
         return Response.status(Response.Status.OK).entity(_certificates).build();
@@ -104,11 +111,20 @@ public class CertificatesResource extends CommonDependencyProvider  {
 
     @Path("{id: [-+]?[0-9][0-9]*}")
     public CertificateResource retrieveCertificateResource(@PathParam("id") int id) {
-        certificateResource.setId(id);
         certificateResource.setAccountId(accountId);
+        certificateResource.setId(id);
         return certificateResource;
     }
 
+
+    private Certificate getCertForAsync(Certificate dbcert)
+    {
+        Certificate certForAsync = new Certificate();
+        certForAsync.setAccountId(dbcert.getAccountId());
+        certForAsync.setId(dbcert.getId());
+        certForAsync.setUserName(dbcert.getUserName());
+        return certForAsync;
+    }
 
     public void setRequestHeaders(HttpHeaders requestHeaders) {
         this.requestHeaders = requestHeaders;

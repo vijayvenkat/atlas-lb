@@ -13,7 +13,7 @@ import java.util.Set;
 @Service
 public interface CtxsReverseProxyLoadBalancerService extends ReverseProxyLoadBalancerService{
 
-    void createCertificates(List<Certificate> dbCerts) throws Exception;
+    List<Certificate> createCertificates(List<Certificate> dbCerts) throws Exception;
     Certificate getCertificate(Certificate certificate) throws Exception;
     void deleteCertificate(Certificate certificate) throws Exception;
 }

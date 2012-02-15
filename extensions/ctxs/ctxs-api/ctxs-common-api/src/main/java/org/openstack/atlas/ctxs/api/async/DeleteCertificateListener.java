@@ -26,7 +26,6 @@ public class DeleteCertificateListener extends BaseListener {
     @Override
     public void doOnMessage(final Message message) throws Exception {
 
-        LOG.debug("Entering " + getClass());
         LOG.debug(message);
         CtxsMessageDataContainer dataContainer = (CtxsMessageDataContainer) getDataContainerFromMessage(message);
 
@@ -46,6 +45,7 @@ public class DeleteCertificateListener extends BaseListener {
             return;
         }
 
+        // Deleting the certificate from repository. Is it good to keep it in the repository?
         certificateRepository.delete(dbcert.getAccountId(), dbcert.getId());
         LOG.info(String.format("Successfully deleted certificate %d.", dbcert.getId()));
     }

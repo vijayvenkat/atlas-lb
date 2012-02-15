@@ -1,3 +1,6 @@
+
+
+
 package org.openstack.atlas.api.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;

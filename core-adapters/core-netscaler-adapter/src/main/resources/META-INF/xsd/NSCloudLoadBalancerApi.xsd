@@ -210,7 +210,7 @@
     </xsd:complexType>
 
     <xsd:complexType name="certificateRef">
-        <xsd:attribute name="idref" type="xsd:int"/>
+        <xsd:attribute name="idRef" type="xsd:int"/>
     </xsd:complexType>
 
     <xsd:attribute name="sslmode" type="xsd:string" />

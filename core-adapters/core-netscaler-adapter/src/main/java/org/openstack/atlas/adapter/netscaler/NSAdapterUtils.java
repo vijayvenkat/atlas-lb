@@ -17,8 +17,10 @@ import org.apache.commons.logging.LogFactory;
 import org.openstack.atlas.adapter.exception.*;
 import org.openstack.atlas.service.domain.entity.*;
 import org.openstack.atlas.adapter.LoadBalancerEndpointConfiguration;
+import org.springframework.stereotype.Service;
 
 
+@Service
 public class NSAdapterUtils
 {
     public static Log LOG = LogFactory.getLog(NSAdapterUtils.class.getName());
@@ -80,7 +82,7 @@ public class NSAdapterUtils
             
             LOG.debug(e.getMessage());
             LOG.debug(stacktrace);
-            throw new AdapterException("Exception occurred: " + e.getMessage(), new Error());    		
+            throw new AdapterException("Exception occurred: " + e.getMessage(), new Error());
         }
     }
 
@@ -131,9 +133,8 @@ public class NSAdapterUtils
 	    } 
         catch (JAXBException e) 
         {
-	        System.out.println("error: " + e.toString());
-	        e.printStackTrace();
-	        throw new AdapterException("Failed to transform a JAXB object to XML payload...", new Error());   
+	        LOG.error("Failed during JAXB-> XML conversion : ", e);
+	        throw new AdapterException("Failed to transform a JAXB object to XML payload...", new Error());
 	    }
 
     	return requestBody;

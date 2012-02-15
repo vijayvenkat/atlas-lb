@@ -18,7 +18,7 @@ public interface CertificateRepository {
 
         List<Certificate> getByAccountId(Integer accountId);
 
-        Certificate getByIdAndAccountId(Integer id, Integer accountId) throws EntityNotFoundException;
+        Certificate getByIdAndAccountId(Integer id, Integer accountId, Boolean... fetchLinkCertificates) throws EntityNotFoundException;
 
         Certificate create(Certificate certificate);
 
@@ -28,4 +28,5 @@ public interface CertificateRepository {
 
         void changeStatus(Integer accountId, Integer id, String newStatus) throws EntityNotFoundException, UnprocessableEntityException, ImmutableEntityException;
 
+        boolean isUsed(Integer id) throws EntityNotFoundException;
 }

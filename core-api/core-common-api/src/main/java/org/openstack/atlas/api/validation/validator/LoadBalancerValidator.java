@@ -22,8 +22,6 @@ public class LoadBalancerValidator implements ResourceValidator<LoadBalancer> {
 
     @Autowired
     public LoadBalancerValidator(LoadBalancerValidatorBuilder ruleBuilder) {
-        LOG.info("inside log + LoadBalancerValidator constructor");
-        System.out.println("printing inside + LoadBalancerValidator " );
         this.ruleBuilder = ruleBuilder;
         validator = build(ruleBuilder);
     }

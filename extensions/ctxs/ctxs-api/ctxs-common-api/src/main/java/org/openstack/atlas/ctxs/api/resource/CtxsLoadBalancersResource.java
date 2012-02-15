@@ -49,14 +49,13 @@ public class CtxsLoadBalancersResource extends org.openstack.atlas.api.resource.
 
     @Override
     public Response create(LoadBalancer _loadBalancer) {
-        LOG.debug("loadbalancer: " + _loadBalancer);
 
         ValidatorResult result = validator.validate(_loadBalancer, HttpRequestType.POST);
         if (!result.passedValidation()) {
             return ResponseFactory.getValidationFaultResponse(result);
         }
         try {
-            CtxsLoadBalancer ctxsLoadBalancer = dozerMapper.map(_loadBalancer, CtxsLoadBalancer.class, "ctxs-lb-api-domain-mapping");
+            CtxsLoadBalancer ctxsLoadBalancer = dozerMapper.map(_loadBalancer, CtxsLoadBalancer.class);
             ctxsLoadBalancer.setAccountId(accountId);
 
             //This call should be moved somewhere else

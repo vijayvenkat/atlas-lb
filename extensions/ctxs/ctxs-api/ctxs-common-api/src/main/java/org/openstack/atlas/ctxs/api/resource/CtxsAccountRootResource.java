@@ -2,12 +2,18 @@ package org.openstack.atlas.ctxs.api.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.openstack.atlas.api.resource.RootResource;
+import org.openstack.atlas.api.resource.AccountRootResource;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.Path;
 
-@Path("{accountId: [-+]?[0-9][0-9]*}")
-public class CtxsRootResource extends RootResource {
+@Primary
+@Controller
+@Scope("request")
+public class CtxsAccountRootResource extends AccountRootResource {
+
     @Autowired
     private CertificatesResource certificatesResource;
     

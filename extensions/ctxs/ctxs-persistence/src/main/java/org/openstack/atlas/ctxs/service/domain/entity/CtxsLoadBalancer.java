@@ -14,10 +14,10 @@ public class CtxsLoadBalancer extends LoadBalancer  implements Serializable {
     private final static long serialVersionUID = 532552314L;
 
     @OrderBy("id")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loadbalancer", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loadBalancer", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<CertificateRef> certificates = new HashSet<CertificateRef>();
 
-    @Column(name = "sslMode", length = 64)
+    @Column(name = "sslMode", length = 25)
     private String sslMode;
 
     public String getSslMode() {

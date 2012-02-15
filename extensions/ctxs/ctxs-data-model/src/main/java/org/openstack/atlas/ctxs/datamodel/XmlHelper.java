@@ -15,7 +15,7 @@ public final class XmlHelper {
 
     public static Element marshall(Object objectToMarshall) throws ParserConfigurationException, JAXBException {
         Node rootNode = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-        JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
+        JAXBContext jaxbContext = JAXBContext.newInstance(objectToMarshall.getClass());
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         jaxbContext.createMarshaller().marshal(objectToMarshall, rootNode);

@@ -4,6 +4,8 @@ import org.openstack.atlas.service.domain.entity.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @javax.persistence.Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -60,32 +62,40 @@ public class Certificate extends org.openstack.atlas.service.domain.entity.Entit
     @Column(name = "publicKeySize")
     private String publicKeySize;
 
+    @Column(name = "certificatestatus")
+    private String certificatestatus;
+
     @Lob
     @Column(name = "certificateContent")
-    private String certificatecontent;
+    private String ccontent;
 
     @Lob
     @Column(name = "keyContent")
-    private String keycontent;
+    private String kcontent;
+
+    @OrderBy("id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "certificate", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<LinkCertificate> lcertificates = new HashSet<LinkCertificate>();
+
 
     public String getSubject() {
         return subject;
     }
 
-    public String getCertificatecontent() {
-        return certificatecontent;
+    public String getCcontent() {
+        return ccontent;
     }
 
-    public void setCertificatecontent(String certificatecontent) {
-        this.certificatecontent = certificatecontent;
+    public void setCcontent(String certificatecontent) {
+        this.ccontent = certificatecontent;
     }
 
-    public String getKeycontent() {
-        return keycontent;
+    public String getKcontent() {
+        return kcontent;
     }
 
-    public void setKeycontent(String keycontent) {
-        this.keycontent = keycontent;
+    public void setKcontent(String keycontent) {
+        this.kcontent = keycontent;
     }
 
     public void setSubject(String subject) {
@@ -194,4 +204,21 @@ public class Certificate extends org.openstack.atlas.service.domain.entity.Entit
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Set<LinkCertificate> getLcertificates() {
+        return lcertificates;
+    }
+
+    public void setLcertificates(Set<LinkCertificate> lcertificates) {
+        this.lcertificates = lcertificates;
+    }
+
+    public String getCertificatestatus() {
+        return certificatestatus;
+    }
+
+    public void setCertificatestatus(String certificatestatus) {
+        this.certificatestatus = certificatestatus;
+    }
+
 }

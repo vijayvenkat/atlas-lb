@@ -23,4 +23,5 @@ public interface CertificateService {
 
     Certificate createCertificate(Certificate certificate, org.openstack.atlas.api.v1.extensions.ctxs.Certificate apiCert) throws EntityNotFoundException, ImmutableEntityException, UnprocessableEntityException, BadRequestException;
     void preDelete(Integer accountId, Integer id) throws EntityNotFoundException, ImmutableEntityException, UnprocessableEntityException, BadRequestException;
+    Certificate getCertificate(Integer accountId, Integer id) throws EntityNotFoundException, UnprocessableEntityException;
 }

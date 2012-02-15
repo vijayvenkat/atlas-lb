@@ -18,47 +18,30 @@ import java.util.List;
 import java.util.Set;
 
 
-
-@XmlRootElement(name="certificates", namespace = "http://docs.openstack.org/atlas/api/v1.1/extensions/ctxs")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "certificatesRef", propOrder = {
-    "certificates"
-})
-class CertificatesRefDuplicate  extends CertificatesRef
-{
-}
-
 public class CertificatesRefConverter implements CustomConverter {
     private static Log LOG = LogFactory.getLog(CertificatesRefConverter.class.getName());
 
     @Override
     public Object convert(Object existingDestinationFieldValue, Object sourceFieldValue, Class<?> destinationClass, Class<?> sourceClass) {
 
-        LOG.debug("CertificatesRefConverter 1");
         if (sourceFieldValue == null) {
             return null;
         }
 
-        LOG.debug("CertificatesRefConverter 2");
 
         if (destinationClass == Set.class) {     // datamodel to domain
-            LOG.debug("CertificatesRefConverter 3 " + ((List<Object>) sourceFieldValue).size());
             Set<org.openstack.atlas.ctxs.service.domain.entity.CertificateRef> certificateRefs = new HashSet<org.openstack.atlas.ctxs.service.domain.entity.CertificateRef>();
 
             CertificatesRefDuplicate _certificatesRef = ExtensionObjectMapper.getAnyElement((List<Object>) sourceFieldValue, CertificatesRefDuplicate.class);
 
-            LOG.debug("CertificatesRefConverter 4");
             if (_certificatesRef == null) return null;
 
-            LOG.debug("CertificatesRefConverter  5 " + _certificatesRef.getCertificates().size());
             for (CertificateRef certificateRef : _certificatesRef.getCertificates()) {
-                LOG.debug("CertificatesRefConverter  6 ");
                 org.openstack.atlas.ctxs.service.domain.entity.CertificateRef dbCertificateRef = new org.openstack.atlas.ctxs.service.domain.entity.CertificateRef();
-                dbCertificateRef.setIdref(certificateRef.getIdref());
+                dbCertificateRef.setIdRef(certificateRef.getIdRef());
                 certificateRefs.add(dbCertificateRef);
             }
 
-            LOG.debug("CertificatesRefConverter  7 ");
             return certificateRefs;
         }
 
@@ -68,7 +51,8 @@ public class CertificatesRefConverter implements CustomConverter {
             if (anies == null) anies = new ArrayList<Object>();
 
             try {
-                CertificatesRef dataModelCertificatesRef = ExtensionConverter.convertCertificatesRef(certificatesRefSet);
+                // Only by passing CertificatesRefDuplicate, the marshall is working. Otherwise a clear error message is thrown indicating  CertificatesRef is not a XmlRootElement
+                CertificatesRef dataModelCertificatesRef = ExtensionConverter.convertCertificatesRef(certificatesRefSet, new CertificatesRefDuplicate());
                 Element objectElement = XmlHelper.marshall(dataModelCertificatesRef);
                 anies.add(objectElement);
             } catch (Exception e) {
@@ -80,5 +64,13 @@ public class CertificatesRefConverter implements CustomConverter {
 
         throw new NoMappableConstantException("Cannot map source type: " + sourceClass.getName());
     }
-
 }
+
+
+// Creating a private element called CertificatesRefDuplicate which is required for unmarshalling and unmarshalling of CertificateRefs.
+// If this is not passed a certificates ref xml element <certificates> <certificate idRef="1"/></certificates> is getting marshalled/unmarshalled to/from Certificates root element.
+@XmlRootElement(name="certificates", namespace = "http://docs.openstack.org/atlas/api/v1.1/extensions/ctxs")
+class CertificatesRefDuplicate  extends CertificatesRef
+{
+}
+

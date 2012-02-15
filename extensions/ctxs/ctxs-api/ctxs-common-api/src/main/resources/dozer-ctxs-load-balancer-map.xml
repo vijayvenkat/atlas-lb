@@ -46,7 +46,7 @@
         </field>
     </mapping>
 
-    <mapping map-null="false" map-id="ctxs-lb-api-domain-mapping" >
+    <mapping map-null="false" >
         <class-a bean-factory="org.openstack.atlas.ctxs.api.mapper.dozer.factory.CtxsLoadBalancerFactory">
             org.openstack.atlas.core.api.v1.LoadBalancer
         </class-a>

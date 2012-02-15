@@ -2,6 +2,7 @@ package org.openstack.atlas.ctxs.service.domain.repository.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openstack.atlas.common.crypto.CryptoUtil;
 import org.openstack.atlas.ctxs.service.domain.entity.Certificate;
 import org.openstack.atlas.ctxs.service.domain.repository.CertificateRepository;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class CertificateRepositoryImpl implements CertificateRepository{
+public class CertificateRepositoryImpl implements CertificateRepository {
     final Log LOG = LogFactory.getLog(CertificateRepositoryImpl.class);
     @PersistenceContext(unitName = "loadbalancing")
     private EntityManager entityManager;
@@ -33,7 +34,7 @@ public class CertificateRepositoryImpl implements CertificateRepository{
     public Certificate getById(Integer id) throws EntityNotFoundException {
         Certificate certificate = entityManager.find(Certificate.class, id);
         if (certificate == null) {
-            throw new EntityNotFoundException(String.format("Certificate for id %d not found", id));
+            throw new EntityNotFoundException(String.format("Certificate with id %d not found", id));
         }
         return certificate;
     }
@@ -46,11 +47,16 @@ public class CertificateRepositoryImpl implements CertificateRepository{
     }
 
     @Override
-    public Certificate getByIdAndAccountId(Integer id, Integer accountId) throws EntityNotFoundException {
+    public Certificate getByIdAndAccountId(Integer id, Integer accountId, Boolean... fetchLinkCertificates) throws EntityNotFoundException {
+
         Certificate certificate = getById(id);
         if (!certificate.getAccountId().equals(accountId)) {
             throw new EntityNotFoundException("Certificate not found");
         }
+
+        if(fetchLinkCertificates != null && fetchLinkCertificates[0] && certificate.getLcertificates() != null)
+            // Fetching Link Certificates to be used for create in adapter
+            LOG.debug("Number of link certificates passed : " + certificate.getLcertificates().size());
 
         return certificate;
     }
@@ -81,5 +87,13 @@ public class CertificateRepositoryImpl implements CertificateRepository{
         Certificate certificate = getByIdAndAccountId(id, accountId);
         certificate.setStatus(newStatus);
         update(certificate);
+    }
+
+    public boolean isUsed(Integer id)
+    {
+        List list = entityManager.createQuery("SELECT certref FROM CertificateRef certref WHERE certref.idRef = :certid")
+                .setParameter("certid", id).getResultList();
+        return list.size() > 0;
+
     }
 }

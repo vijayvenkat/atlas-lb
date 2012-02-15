@@ -32,6 +32,7 @@
         <xsd:attribute name="encoding" type="tns:encodingType"/>
         <xsd:attribute name="format" type="tns:certformat"/>
         <xsd:attribute name="status" type="xsd:string"/>
+        <xsd:attribute name="certificatestatus" type="xsd:string"/>
         <xsd:attribute name="subject" type="xsd:string"/>
         <xsd:attribute name="Issuer" type="xsd:string"/>
         <xsd:attribute name="notBefore" type="xsd:string"/>
@@ -65,7 +66,7 @@
     </xsd:complexType>
 
     <xsd:complexType name="certificateRef">
-        <xsd:attribute name="idref" type="xsd:int"/>
+        <xsd:attribute name="idRef" type="xsd:int"/>
     </xsd:complexType>
 
 

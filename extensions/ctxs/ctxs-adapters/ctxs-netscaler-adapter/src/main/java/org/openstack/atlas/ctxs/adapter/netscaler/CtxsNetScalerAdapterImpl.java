@@ -34,36 +34,16 @@ public class CtxsNetScalerAdapterImpl extends NetScalerAdapterImpl implements Ct
 //    @Qualifier("CtxsAdapterDozerMapper")
     protected DozerBeanMapper dozerMapper;
 
-    @Override
-    public void createLoadBalancer(LoadBalancerEndpointConfiguration config, org.openstack.atlas.service.domain.entity.LoadBalancer lb)
-            throws AdapterException 
-    {
-        super.createLoadBalancer(config,lb);
-//      lb will always be instanceof org.openstack.atlas.ctxs.service.domain.entity.CtxsLoadBalancer. Is there any case it will be core entity LoadBalancer?
-
-//        if (lb instanceof org.openstack.atlas.ctxs.service.domain.entity.CtxsLoadBalancer) {
-//             LOG.info("Reaching CtxsNetScalerAdapterImpl.createLoadBalancer() with extended loadbalancer");
-//
-//             // NOP
-//        } else {
-//             LOG.info("Reaching CtxsNetScalerAdapterImpl.createLoadBalancer() with core loadbalancer");
-//             super.createLoadBalancer(config,lb);
-//        }
-    }
 
     @Override
-    public void createCertificates(LoadBalancerEndpointConfiguration config, List<org.openstack.atlas.ctxs.service.domain.entity.Certificate> dbCerts) throws AdapterException
+    public List<org.openstack.atlas.ctxs.service.domain.entity.Certificate> createCertificates(LoadBalancerEndpointConfiguration config, List<org.openstack.atlas.ctxs.service.domain.entity.Certificate> dbCerts) throws AdapterException
     {
         LOG.debug("Reached CtxsNetScalerAdapterImpl.createCertificates");
         Certificates certificates = new Certificates();
         Integer accountId = dbCerts.get(0).getAccountId();
-        for(String mappingFile : dozerMapper.getMappingFiles()) {
-            LOG.debug("Mapping files for dozer " + mappingFile);
-        }
 
         for(int index =0; index < dbCerts.size(); index++) {
             Certificate cloudCertificate = (Certificate)dozerMapper.map(dbCerts.get(index), Certificate.class, "ctxs-cert-cloud-domain-mapping");
-//            cloudCertificate.setId(dbCerts.get(index).getId());
             certificates.getCertificates().add(cloudCertificate);
         }
 
@@ -72,7 +52,17 @@ public class CtxsNetScalerAdapterImpl extends NetScalerAdapterImpl implements Ct
         LOG.debug("Certificate request body " + requestBody);
         String serviceUrl = config.getHost().getEndpoint();
         String resourceUrl = nsAdapterUtils.getLBURLStr(serviceUrl, accountId, resourceType);
-        nsAdapterUtils.performRequest("POST", resourceUrl, requestBody);
+        String response = nsAdapterUtils.performRequest("POST", resourceUrl, requestBody);
+        Certificates cloudCertificates = (Certificates) nsAdapterUtils.getResponseObject(response);
+        List<Certificate> cloudListCertificates = cloudCertificates.getCertificates();
+        List<org.openstack.atlas.ctxs.service.domain.entity.Certificate> returnCerts = new ArrayList<org.openstack.atlas.ctxs.service.domain.entity.Certificate>();
+        for(Certificate cloudCertificate : cloudListCertificates)
+        {
+            org.openstack.atlas.ctxs.service.domain.entity.Certificate returnCert = (org.openstack.atlas.ctxs.service.domain.entity.Certificate)
+                    dozerMapper.map(cloudCertificate, org.openstack.atlas.ctxs.service.domain.entity.Certificate.class, "ctxs-cert-cloud-domain-mapping");
+            returnCerts.add(returnCert);
+        }
+        return returnCerts;
     }
 
     @Override

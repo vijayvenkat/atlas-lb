@@ -47,10 +47,10 @@ public class CtxsReverseProxyLoadBalancerServiceImpl extends ReverseProxyLoadBal
     protected org.openstack.atlas.service.domain.service.HostService hostService;
 
     @Override
-    public void createCertificates(List<Certificate> dbCerts) throws AdapterException, DecryptException, MalformedURLException, Exception {
+    public List<Certificate> createCertificates(List<Certificate> dbCerts) throws AdapterException, DecryptException, MalformedURLException, Exception {
         LoadBalancerEndpointConfiguration config = super.getConfigbyHost(hostService.getDefaultActiveHost());
         try {
-            ((CtxsLoadBalancerAdapter)loadBalancerAdapter).createCertificates(config, dbCerts);
+           return ((CtxsLoadBalancerAdapter)loadBalancerAdapter).createCertificates(config, dbCerts);
         } catch (ConnectionException exc) {
             checkAndSetIfEndPointBad(config, exc);
             throw exc;
