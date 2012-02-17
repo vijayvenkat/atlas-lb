@@ -97,7 +97,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
 
         if(list.size() > 0)
         {
-            System.out.println(String.format(" ref size %d", list.size()));
             for(Object item : list)
             {
                 CertificateRef ref = (CertificateRef) item;

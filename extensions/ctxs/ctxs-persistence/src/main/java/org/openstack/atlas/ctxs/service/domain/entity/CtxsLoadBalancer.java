@@ -13,8 +13,6 @@ import java.util.Set;
 public class CtxsLoadBalancer extends LoadBalancer  implements Serializable {
     private final static long serialVersionUID = 532552314L;
 
-//    @OrderBy("id")
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loadBalancer", orphanRemoval = true, fetch = FetchType.EAGER)
     @OneToMany(mappedBy = "loadBalancer", fetch = FetchType.EAGER)
     private Set<CertificateRef> certificates = new HashSet<CertificateRef>();
 
