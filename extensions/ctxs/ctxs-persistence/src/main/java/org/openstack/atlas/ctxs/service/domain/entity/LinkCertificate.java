@@ -50,4 +50,13 @@ public class LinkCertificate extends org.openstack.atlas.service.domain.entity.E
     public void setCertificatecontent(String certificateContent) {
         this.certificatecontent = certificateContent;
     }
+
+    public Certificate getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(Certificate certificate) {
+        this.certificate = certificate;
+    }
+
 }

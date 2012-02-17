@@ -4,13 +4,16 @@ import org.openstack.atlas.ctxs.service.domain.entity.CertificateRef;
 import org.openstack.atlas.ctxs.service.domain.entity.CtxsLoadBalancer;
 import org.openstack.atlas.service.domain.entity.LoadBalancer;
 import org.openstack.atlas.service.domain.entity.LoadBalancerJoinVip;
+import org.openstack.atlas.service.domain.exception.EntityNotFoundException;
 import org.openstack.atlas.service.domain.repository.impl.LoadBalancerRepositoryImpl;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,24 +33,16 @@ public class CtxsLoadBalancerRepositoryImpl extends LoadBalancerRepositoryImpl {
         final Set<CertificateRef> certificateRefs = ((CtxsLoadBalancer)loadBalancer).getCertificates();
         ((CtxsLoadBalancer) loadBalancer).setCertificates(null);
         loadBalancer = super.create(loadBalancer);
-        for(CertificateRef certificateRef: certificateRefs)
+        ((CtxsLoadBalancer) loadBalancer).setCertificates(new HashSet<CertificateRef>());
+        if(certificateRefs != null)
         {
-            CertificateRef certificateRefWithLB = new CertificateRef(((CtxsLoadBalancer)loadBalancer), certificateRef.getIdRef());
-            entityManager.merge(certificateRefWithLB);
+            for(CertificateRef certificateRef: certificateRefs)
+            {
+                CertificateRef certificateRefWithLB = new CertificateRef(((CtxsLoadBalancer)loadBalancer), certificateRef.getIdRef());
+                entityManager.merge(certificateRefWithLB);
+            }
+            entityManager.flush();
         }
         return loadBalancer;
     }
-
-    @Override
-    protected void setLbIdOnChildObjects(final LoadBalancer loadBalancer) {
-        super.setLbIdOnChildObjects(loadBalancer);
-        if (loadBalancer instanceof CtxsLoadBalancer) {
-            if (((CtxsLoadBalancer) loadBalancer).getCertificates() != null) {
-                for (CertificateRef certificateRef : ((CtxsLoadBalancer) loadBalancer).getCertificates()) {
-                    certificateRef.setLoadbalancer(((CtxsLoadBalancer) loadBalancer));
-                }
-            }
-        }
-    }
-
 }

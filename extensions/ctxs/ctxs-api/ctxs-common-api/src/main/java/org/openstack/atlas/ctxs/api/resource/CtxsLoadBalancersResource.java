@@ -61,11 +61,15 @@ public class CtxsLoadBalancersResource extends org.openstack.atlas.api.resource.
             //This call should be moved somewhere else
             virtualIpService.addAccountRecord(accountId);
 
-            org.openstack.atlas.service.domain.entity.LoadBalancer newlyCreatedLb = loadbalancerService.create(ctxsLoadBalancer);
+            CtxsLoadBalancer newlyCreatedLb = (CtxsLoadBalancer) loadbalancerService.create(ctxsLoadBalancer);
+            if(newlyCreatedLb.getCertificates() != null)
+                System.out.println("newLB " + newlyCreatedLb.getCertificates().size());
             MessageDataContainer msg = new MessageDataContainer();
             msg.setLoadBalancer(newlyCreatedLb);
             asyncService.callAsyncLoadBalancingOperation(CoreOperation.CREATE_LOADBALANCER, msg);
-            return Response.status(Response.Status.ACCEPTED).entity(dozerMapper.map(newlyCreatedLb, LoadBalancer.class)).build();
+            LoadBalancer returnLoadBalancer = dozerMapper.map(newlyCreatedLb, LoadBalancer.class);
+            System.out.println("return LB size " + returnLoadBalancer.getAnies().size());
+            return Response.status(Response.Status.ACCEPTED).entity(returnLoadBalancer).build();
         } catch (Exception e) {
             return ResponseFactory.getErrorResponse(e, null, null);
         }

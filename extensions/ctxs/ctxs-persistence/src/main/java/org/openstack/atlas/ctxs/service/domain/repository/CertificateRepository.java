@@ -29,4 +29,6 @@ public interface CertificateRepository {
         void changeStatus(Integer accountId, Integer id, String newStatus) throws EntityNotFoundException, UnprocessableEntityException, ImmutableEntityException;
 
         boolean isUsed(Integer id) throws EntityNotFoundException;
+
+        boolean deleteLoadBalancerCertificates(Integer id);
 }

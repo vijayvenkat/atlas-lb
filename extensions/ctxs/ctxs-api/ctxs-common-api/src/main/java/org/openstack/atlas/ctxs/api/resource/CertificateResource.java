@@ -73,6 +73,7 @@ public class CertificateResource extends CommonDependencyProvider  {
         try {
             Certificate certificate = certificateRepository.getByIdAndAccountId(id, accountId);
             org.openstack.atlas.api.v1.extensions.ctxs.Certificate apiCert = dozerMapper.map(certificate, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-domain-api-mapping");
+            apiCert.setLinkcertificates(null);
             return Response.status(Response.Status.OK).entity(apiCert).build();
         } catch (Exception e) {
             return ResponseFactory.getErrorResponse(e);
@@ -86,14 +87,18 @@ public class CertificateResource extends CommonDependencyProvider  {
             certificate.setId(id);
             certificate.setAccountId(accountId);
 
-            certificateService.preDelete(accountId, id);
+            String deleteStatus = certificateService.delete(accountId, id);
 
-            CtxsMessageDataContainer dataContainer = new CtxsMessageDataContainer();
-            HashMap<String, Object> messageData = new HashMap<String, Object>();
-            messageData.put("Certificate", certificate);
-            dataContainer.setHashData(messageData);
+            if(deleteStatus.equals("PENDING_DELETE"))
+            {
+                CtxsMessageDataContainer dataContainer = new CtxsMessageDataContainer();
+                HashMap<String, Object> messageData = new HashMap<String, Object>();
+                messageData.put("Certificate", certificate);
+                dataContainer.setHashData(messageData);
 
-            asyncService.callAsyncLoadBalancingOperation("DELETE_CERTIFICATE", dataContainer);
+                asyncService.callAsyncLoadBalancingOperation("DELETE_CERTIFICATE", dataContainer);
+            }
+
             return Response.status(Response.Status.ACCEPTED).build();
         } catch (Exception e) {
             return ResponseFactory.getErrorResponse(e);

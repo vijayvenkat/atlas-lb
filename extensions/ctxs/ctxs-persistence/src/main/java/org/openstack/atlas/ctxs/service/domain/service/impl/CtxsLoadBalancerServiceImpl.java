@@ -8,6 +8,7 @@ import org.openstack.atlas.service.domain.entity.LoadBalancer;
 import org.openstack.atlas.service.domain.exception.BadRequestException;
 import org.openstack.atlas.service.domain.exception.EntityNotFoundException;
 import org.openstack.atlas.service.domain.exception.LimitReachedException;
+import org.openstack.atlas.service.domain.exception.PersistenceServiceException;
 import org.openstack.atlas.service.domain.service.impl.LoadBalancerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -46,5 +47,11 @@ public class CtxsLoadBalancerServiceImpl extends LoadBalancerServiceImpl {
                     throw new BadRequestException(String.format("Only certificates with ACTIVE status can be supplied. The status of the certificate with id %d is %s ", certificate.getId(), certificate.getStatus()));
             }
         }
+    }
+
+    @Override
+    public void delete(LoadBalancer lb) throws PersistenceServiceException {
+        super.delete(lb);    //To change body of overridden methods use File | Settings | File Templates.
+        certificateRepository.deleteLoadBalancerCertificates(lb.getId());
     }
 }

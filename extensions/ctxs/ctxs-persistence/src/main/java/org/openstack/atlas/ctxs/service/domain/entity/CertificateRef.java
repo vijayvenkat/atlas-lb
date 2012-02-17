@@ -73,6 +73,7 @@ public class CertificateRef implements Serializable {
         this.loadBalancer = lb;
         this.id.idRef = certificateid;
         this.id.loadBalancerId = loadBalancer.getId();
+        lb.getCertificates().add(this);
     }
 
     public Id getId() {

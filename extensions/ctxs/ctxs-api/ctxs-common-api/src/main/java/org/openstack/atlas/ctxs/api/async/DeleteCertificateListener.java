@@ -38,7 +38,7 @@ public class DeleteCertificateListener extends BaseListener {
             ((CtxsReverseProxyLoadBalancerService)reverseProxyLoadBalancerService).deleteCertificate(dbcert);
 
         } catch (Exception e) {
-            dbcert.setStatus("ERROR");
+            dbcert.setStatus("DELETE_ERROR");
             dbcert = certificateRepository.update(dbcert);
             String alertDescription = String.format("An error occurred while deleting certificate %d via adapter.", dbcert.getId());
             LOG.error(alertDescription, e);

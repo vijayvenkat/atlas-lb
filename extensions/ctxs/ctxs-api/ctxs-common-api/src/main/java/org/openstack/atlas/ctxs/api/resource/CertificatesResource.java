@@ -74,7 +74,9 @@ public class CertificatesResource extends CommonDependencyProvider  {
                 domainCertificate.setAccountId(accountId);
                 domainCertificate.setUserName(getUserName(requestHeaders));
                 Certificate dbcert = certificateService.createCertificate(domainCertificate, apiCert);
-                returnCerts.getCertificates().add(dozerMapper.map(dbcert, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-domain-api-mapping"));
+                org.openstack.atlas.api.v1.extensions.ctxs.Certificate returnCert = dozerMapper.map(dbcert, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-domain-api-mapping");
+                returnCert.setLinkcertificates(null);
+                returnCerts.getCertificates().add(returnCert);
                 certsForAsync.add(getCertForAsync(dbcert));
             }
 
@@ -103,7 +105,9 @@ public class CertificatesResource extends CommonDependencyProvider  {
         List<Certificate> certificates = certificateRepository.getByAccountId(accountId);
         
         for (Certificate certificate : certificates) {
-            _certificates.getCertificates().add(dozerMapper.map(certificate, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-domain-api-mapping"));
+            org.openstack.atlas.api.v1.extensions.ctxs.Certificate cert = dozerMapper.map(certificate, org.openstack.atlas.api.v1.extensions.ctxs.Certificate.class, "ctxs-cert-domain-api-mapping");
+            cert.setLinkcertificates(null);
+            _certificates.getCertificates().add(cert);
         }
         
         return Response.status(Response.Status.OK).entity(_certificates).build();

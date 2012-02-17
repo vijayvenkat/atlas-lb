@@ -6,6 +6,7 @@ import org.openstack.atlas.common.crypto.CryptoUtil;
 import org.openstack.atlas.common.crypto.exception.DecryptException;
 import org.openstack.atlas.common.crypto.exception.EncryptException;
 import org.openstack.atlas.ctxs.service.domain.entity.Certificate;
+import org.openstack.atlas.ctxs.service.domain.entity.LinkCertificate;
 import org.openstack.atlas.ctxs.service.domain.repository.CertificateRepository;
 import org.openstack.atlas.ctxs.service.domain.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,17 @@ public class CertificateServiceImpl implements CertificateService{
             e.printStackTrace();
             throw new BadRequestException("Could not encrypt the certificates key content");
         }
+        for(LinkCertificate linkCertificate : certificate.getLcertificates())
+        {
+            linkCertificate.setCertificate(certificate);
+        }
         certificate.setStatus("BUILD");
         Certificate dbcert= certificateRepository.create(certificate);
         return dbcert;
     }
 
     @Override
-    public void preDelete(Integer accountId, Integer id) throws EntityNotFoundException, ImmutableEntityException, UnprocessableEntityException, BadRequestException {
+    public String delete(Integer accountId, Integer id) throws EntityNotFoundException, ImmutableEntityException, UnprocessableEntityException, BadRequestException {
 
         Certificate dbcert = null;
         try {
@@ -50,15 +55,22 @@ public class CertificateServiceImpl implements CertificateService{
             throw new BadRequestException(String.format("No Certificate with id '%d' found.", id));
         }
 
-        if (!dbcert.getStatus().equals("ACTIVE")) {
+        if (dbcert.getStatus().equals("ERROR")) {
+            certificateRepository.delete(accountId, id);
+            return "COMPLETE_DELETE";
+        }
+
+        if (dbcert.getStatus().equals("ACTIVE")) {
+            if(certificateRepository.isUsed(id))
+                throw new BadRequestException(String.format("Certificate '%d' is in use, and cannot be deleted", id));
+            certificateRepository.changeStatus(accountId, id, "PENDING_DELETE");
+            return "PENDING_DELETE";
+        }
+        else // Reaches here in transition states like PENDING_DELETE or BUILD
+        {
             LOG.warn(String.format("Certificate '%d' has a status of '%s' and is considered immutable.", id, dbcert.getStatus()));
             throw new BadRequestException(String.format("Certificate '%d' has a status of '%s' and is considered immutable.", id, dbcert.getStatus()));
         }
-
-        if(certificateRepository.isUsed(id))
-            throw new BadRequestException(String.format("Certificate '%d' is in use, and cannot be deleted", id));
-
-        certificateRepository.changeStatus(accountId, id, "PENDING_DELETE");
     }
 
     @Override

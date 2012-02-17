@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openstack.atlas.common.crypto.CryptoUtil;
 import org.openstack.atlas.ctxs.service.domain.entity.Certificate;
+import org.openstack.atlas.ctxs.service.domain.entity.CertificateRef;
 import org.openstack.atlas.ctxs.service.domain.repository.CertificateRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             throw new EntityNotFoundException("Certificate not found");
         }
 
-        if(fetchLinkCertificates != null && fetchLinkCertificates[0] && certificate.getLcertificates() != null)
+        if(fetchLinkCertificates != null && fetchLinkCertificates.length > 0 && fetchLinkCertificates[0] && certificate.getLcertificates() != null)
             // Fetching Link Certificates to be used for create in adapter
             LOG.debug("Number of link certificates passed : " + certificate.getLcertificates().size());
 
@@ -91,9 +92,39 @@ public class CertificateRepositoryImpl implements CertificateRepository {
 
     public boolean isUsed(Integer id)
     {
-        List list = entityManager.createQuery("SELECT certref FROM CertificateRef certref WHERE certref.idRef = :certid")
+        List list = entityManager.createQuery("SELECT certref FROM CertificateRef certref WHERE certref.id.idRef = :certid")
                 .setParameter("certid", id).getResultList();
-        return list.size() > 0;
+
+        if(list.size() > 0)
+        {
+            System.out.println(String.format(" ref size %d", list.size()));
+            for(Object item : list)
+            {
+                CertificateRef ref = (CertificateRef) item;
+                if(ref.getLoadbalancer().getStatus().equals("ACTIVE"))
+                    return true;
+            }
+        }
+        return false;
+
+    }
+
+    public boolean deleteLoadBalancerCertificates(Integer id)
+    {
+        List list = entityManager.createQuery("SELECT certref FROM CertificateRef certref WHERE certref.id.loadBalancerId = :lbId")
+                .setParameter("lbId", id).getResultList();
+        if(list.size() > 0)
+        {
+            System.out.println(String.format(" ref values size %d", list.size()));
+            for(Object item : list)
+            {
+                CertificateRef ref = (CertificateRef) item;
+                System.out.println(String.format(" ref values : idref %d lbid %d", ref.getIdRef(), ref.getLoadbalancer().getId()));
+//                entityManager.remove(item);
+            }
+        }
+        entityManager.flush();
+        return true;
 
     }
 }
