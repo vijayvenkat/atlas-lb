@@ -69,10 +69,8 @@ public class CtxsLoadBalancerValidatorBuilder extends LoadBalancerValidatorBuild
             @Override
             public VerifierResult verify(Map<QName, String> otherAttributes) {
                 String sslModeValue = ExtensionObjectMapper.getOtherAttribute(otherAttributes, "sslMode");
-                LOG.debug("Inside sslMode verification value: " + sslModeValue);
                 if(sslModeValue != null)
                 {
-                    LOG.debug("result Inside sslMode verification value: " + (sslModeValue.equals("PASSTHROUGH") || sslModeValue.equals("OFFLOAD") || sslModeValue.equals("OFFLOAD_AND_REENCRYPT")));
                     return new VerifierResult(sslModeValue.equals("PASSTHROUGH") || sslModeValue.equals("OFFLOAD") || sslModeValue.equals("OFFLOAD_AND_REENCRYPT"));
                 }
                 return new VerifierResult(true);
