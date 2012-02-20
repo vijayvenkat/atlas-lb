@@ -72,7 +72,6 @@ public class LoadBalancerRepositoryImpl implements LoadBalancerRepository {
         loadBalancer.setCreated(current);
         loadBalancer.setUpdated(current);
         loadBalancer = entityManager.merge(loadBalancer);
-        entityManager.persist(loadBalancer);
 
         // Now attach loadbalancer to vips
         for (LoadBalancerJoinVip lbJoinVipToLink : lbJoinVipsToLink) {
