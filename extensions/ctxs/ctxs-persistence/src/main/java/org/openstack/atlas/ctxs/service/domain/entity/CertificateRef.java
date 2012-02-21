@@ -106,7 +106,8 @@ public class CertificateRef implements Serializable {
     @Override
     public String toString() {
         return "CertificateRef {" +
-               "    idRef=" + id.idRef.toString() +
+                "    idRef=" + id.idRef.toString() +
+                ",    loadbalancer_id=" + id.loadBalancerId.toString() +
                 '}';
     }
 }

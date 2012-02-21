@@ -17,13 +17,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vijayve
- * Date: 1/11/12
- * Time: 11:33 AM
- * To change this template use File | Settings | File Templates.
- */
 @Repository
 @Transactional
 public class CertificateRepositoryImpl implements CertificateRepository {
@@ -72,7 +65,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public Certificate update(Certificate certificate) {
         certificate = entityManager.merge(certificate);
-//        entityManager.flush();
+        entityManager.flush();
         return certificate;
     }
 
@@ -105,25 +98,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             }
         }
         return false;
-
-    }
-
-    public boolean deleteLoadBalancerCertificates(Integer id)
-    {
-        List list = entityManager.createQuery("SELECT certref FROM CertificateRef certref WHERE certref.id.loadBalancerId = :lbId")
-                .setParameter("lbId", id).getResultList();
-        if(list.size() > 0)
-        {
-            System.out.println(String.format(" ref values size %d", list.size()));
-            for(Object item : list)
-            {
-                CertificateRef ref = (CertificateRef) item;
-                System.out.println(String.format(" ref values : idref %d lbid %d", ref.getIdRef(), ref.getLoadbalancer().getId()));
-//                entityManager.remove(item);
-            }
-        }
-        entityManager.flush();
-        return true;
 
     }
 }

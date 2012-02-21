@@ -5,13 +5,6 @@ import org.openstack.atlas.service.domain.exception.*;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vijayve
- * Date: 1/11/12
- * Time: 11:21 AM
- * To change this template use File | Settings | File Templates.
- */
 public interface CertificateRepository {
 
         Certificate getById(Integer id) throws EntityNotFoundException;
@@ -29,6 +22,4 @@ public interface CertificateRepository {
         void changeStatus(Integer accountId, Integer id, String newStatus) throws EntityNotFoundException, UnprocessableEntityException, ImmutableEntityException;
 
         boolean isUsed(Integer id) throws EntityNotFoundException;
-
-        boolean deleteLoadBalancerCertificates(Integer id);
 }

@@ -16,13 +16,6 @@ import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vijayve
- * Date: 1/27/12
- * Time: 2:59 PM
- * To change this template use File | Settings | File Templates.
- */
 @Primary
 @Repository
 @Transactional

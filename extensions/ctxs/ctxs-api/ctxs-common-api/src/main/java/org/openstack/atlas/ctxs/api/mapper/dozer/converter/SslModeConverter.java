@@ -7,13 +7,6 @@ import javax.xml.namespace.QName;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vijayve
- * Date: 2/7/12
- * Time: 4:21 PM
- * To change this template use File | Settings | File Templates.
- */
 public class SslModeConverter implements CustomConverter {
     @Override
     public Object convert(Object existingDestinationFieldValue, Object sourceFieldValue, Class<?> destinationClass, Class<?> sourceClass) {

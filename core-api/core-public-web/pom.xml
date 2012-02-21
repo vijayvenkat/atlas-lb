@@ -34,11 +34,11 @@
             <artifactId>core-zxtm-adapter</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>${project.groupId}</groupId>-->
-            <!--<artifactId>core-netscaler-adapter</artifactId>-->
-            <!--<version>${project.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>core-netscaler-adapter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>atlas-rax-api</artifactId>
@@ -129,7 +129,7 @@
                                             <type>directory</type>
                                             <mapper>
                                                 <type>perm</type>
-                                                <prefix>e:/etc/openstack/atlas/config</prefix>
+                                                <prefix>/etc/openstack/atlas/config</prefix>
                                             </mapper>
                                         </data>
                                         <data>

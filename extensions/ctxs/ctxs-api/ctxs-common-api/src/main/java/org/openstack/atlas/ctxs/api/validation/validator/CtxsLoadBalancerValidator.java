@@ -14,13 +14,6 @@ import org.openstack.atlas.ctxs.api.validation.validator.builder.CertificateRefV
 import static org.openstack.atlas.api.validation.ValidatorBuilder.build;
 import static org.openstack.atlas.api.validation.context.HttpRequestType.POST;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vijayve
- * Date: 2/6/12
- * Time: 8:18 PM
- * To change this template use File | Settings | File Templates.
- */
 public class CtxsLoadBalancerValidator implements ResourceValidator<Object> {
 
     public static Log LOG = LogFactory.getLog(CtxsLoadBalancerValidator.class.getName());

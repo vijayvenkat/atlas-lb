@@ -14,13 +14,6 @@ import org.openstack.atlas.service.domain.exception.*;
 import org.springframework.stereotype.Service;
 
 
-/**
- * Created by IntelliJ IDEA.
- * User: vijayve
- * Date: 1/11/12
- * Time: 3:52 PM
- * To change this template use File | Settings | File Templates.
- */
 @Service
 public class CertificateServiceImpl implements CertificateService{
     public static Log LOG = LogFactory.getLog(CertificateServiceImpl.class.getName());

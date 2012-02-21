@@ -1,13 +1,5 @@
 package org.openstack.atlas.ctxs.api.resource;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vijayve
- * Date: 1/13/12
- * Time: 4:42 PM
- * To change this template use File | Settings | File Templates.
- */
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

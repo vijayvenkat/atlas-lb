@@ -16,13 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vijayve
- * Date: 2/8/12
- * Time: 9:50 AM
- * To change this template use File | Settings | File Templates.
- */
 @Service
 @Primary
 public class CtxsLoadBalancerServiceImpl extends LoadBalancerServiceImpl {
@@ -47,11 +40,5 @@ public class CtxsLoadBalancerServiceImpl extends LoadBalancerServiceImpl {
                     throw new BadRequestException(String.format("Only certificates with ACTIVE status can be supplied. The status of the certificate with id %d is %s ", certificate.getId(), certificate.getStatus()));
             }
         }
-    }
-
-    @Override
-    public void delete(LoadBalancer lb) throws PersistenceServiceException {
-        super.delete(lb);    //To change body of overridden methods use File | Settings | File Templates.
-        certificateRepository.deleteLoadBalancerCertificates(lb.getId());
     }
 }
